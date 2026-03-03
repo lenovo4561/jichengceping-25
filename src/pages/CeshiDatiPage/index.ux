@@ -1,0 +1,294 @@
+<template>
+  <list class="page-list">
+    <!-- 顶部背景区 -->
+    <list-item type="header" class="header-item">
+      <div class="header-area">
+        <image class="header-bg" src="/assets/img/remencepingdati-bg.png"></image>
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+          <div class="back-btn" onclick="goBack">
+            <image class="back-icon" src="/assets/img/back.png"></image>
+          </div>
+        </div>
+        <!-- 底部渐变 -->
+        <div class="header-gradient"></div>
+      </div>
+    </list-item>
+
+    <!-- 白色圆角面板起始 -->
+    <list-item type="panel-top" class="panel-top-item">
+      <div class="panel-top"></div>
+    </list-item>
+
+    <!-- 5道题目 -->
+    <list-item type="q0" class="q-item" for="{{(qIdx, q) in questions}}">
+      <div class="question-block">
+        <text class="q-title">{{qIdx + 1}}、{{q.question}}</text>
+        <div class="options-row">
+          <div class="option-cell {{answers[qIdx] === 0 ? 'opt-selected' : 'opt-normal'}}" onclick="selectOption(qIdx, 0)">
+            <text class="opt-text {{answers[qIdx] === 0 ? 'opt-text-sel' : ''}}">A. {{q.opts[0]}}</text>
+          </div>
+          <div class="option-cell {{answers[qIdx] === 1 ? 'opt-selected' : 'opt-normal'}}" onclick="selectOption(qIdx, 1)">
+            <text class="opt-text {{answers[qIdx] === 1 ? 'opt-text-sel' : ''}}">B. {{q.opts[1]}}</text>
+          </div>
+        </div>
+        <div class="options-row">
+          <div class="option-cell {{answers[qIdx] === 2 ? 'opt-selected' : 'opt-normal'}}" onclick="selectOption(qIdx, 2)">
+            <text class="opt-text {{answers[qIdx] === 2 ? 'opt-text-sel' : ''}}">C. {{q.opts[2]}}</text>
+          </div>
+          <div class="option-cell {{answers[qIdx] === 3 ? 'opt-selected' : 'opt-normal'}}" onclick="selectOption(qIdx, 3)">
+            <text class="opt-text {{answers[qIdx] === 3 ? 'opt-text-sel' : ''}}">D. {{q.opts[3]}}</text>
+          </div>
+        </div>
+      </div>
+    </list-item>
+
+    <!-- 底部查看结论按钮（答完后激活） -->
+    <list-item type="footer" class="footer-item">
+      <div class="bottom-bar">
+        <div class="result-btn {{allAnswered ? 'btn-active' : 'btn-disabled'}}" onclick="viewResult">
+          <text class="result-btn-text">查看结论</text>
+        </div>
+      </div>
+    </list-item>
+  </list>
+</template>
+
+<script>
+import router from '@system.router'
+
+export default {
+  data() {
+    return {
+      catTitle: '心理状态',
+      testName: '心理状态测试',
+      answers: [-1, -1, -1, -1, -1],
+      questions: [
+        {
+          question: '我觉得闷闷不乐，情绪低沉',
+          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
+        },
+        {
+          question: '我觉得一天之中早晨最好',
+          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
+        },
+        {
+          question: '我觉得自己生活的非常的苦',
+          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
+        },
+        {
+          question: '我感到精力充沛，干劲十足',
+          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
+        },
+        {
+          question: '我容易感到心烦意乱，难以平静',
+          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
+        }
+      ]
+    }
+  },
+  computed: {
+    allAnswered() {
+      return this.answers.every(function (a) { return a !== -1 })
+    }
+  },
+  onInit() {
+    if (this.$page && this.$page.query) {
+      const q = this.$page.query
+      if (q.catTitle) this.catTitle = q.catTitle
+      if (q.testName) this.testName = q.testName
+    }
+  },
+  goBack() {
+    router.back()
+  },
+  selectOption(qIdx, optIdx) {
+    const newAnswers = this.answers.slice()
+    newAnswers[qIdx] = optIdx
+    this.answers = newAnswers
+  },
+  viewResult() {
+    if (!this.allAnswered) return
+    router.replace({
+      uri: '/pages/CeshiDatiJielun',
+      params: { answers: this.answers.join(',') }
+    })
+  }
+}
+</script>
+
+<style>
+.page-list {
+  flex: 1;
+  width: 250px;
+  background-color: #f0faf4;
+}
+.header-item {
+  width: 250px;
+}
+.header-area {
+  width: 250px;
+  height: 140px;
+  position: relative;
+  flex-direction: column;
+}
+.header-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 140px;
+  object-fit: cover;
+}
+.header-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 250px;
+  height: 60px;
+  background: linear-gradient(to bottom, rgba(240,250,244,0) 0%, rgba(255,255,255,0.95) 100%);
+}
+.nav-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 44px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+}
+.back-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background-color: rgba(255, 255, 255, 0.3);
+  align-items: center;
+  justify-content: center;
+}
+.back-icon {
+  width: 6px;
+  height: 10px;
+  object-fit: contain;
+}
+.nav-cat {
+  font-size: 13px;
+  font-weight: bold;
+  color: #ffffff;
+}
+.title-block {
+  position: absolute;
+  bottom: 22px;
+  left: 14px;
+  flex-direction: column;
+}
+.title-main {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1a4d28;
+  line-height: 24px;
+}
+.title-sub {
+  font-size: 9px;
+  color: #3a7a52;
+  margin-top: 2px;
+  letter-spacing: 1px;
+}
+.character-img {
+  position: absolute;
+  right: 0;
+  bottom: -20px;
+  width: 110px;
+  height: 130px;
+  object-fit: contain;
+}
+.panel-top-item {
+  width: 250px;
+}
+.panel-top {
+  width: 250px;
+  height: 24px;
+  margin-top: -14px;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  background-color: #ffffff;
+}
+.q-item {
+  width: 250px;
+  background-color: #ffffff;
+}
+.question-block {
+  width: 250px;
+  flex-direction: column;
+  padding: 0 14px 20px 14px;
+}
+.q-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #1a1a1a;
+  line-height: 20px;
+  margin-bottom: 12px;
+}
+.options-row {
+  flex-direction: row;
+  width: 222px;
+  margin-bottom: 10px;
+}
+.option-cell {
+  width: 104px;
+  min-height: 40px;
+  border-radius: 8px;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px 8px;
+  justify-content: center;
+  margin-right: 7px;
+}
+.opt-normal {
+  border-color: #e0e0e0;
+  background-color: #f9f9f9;
+}
+.opt-selected {
+  border-color: #28c060;
+  background-color: rgba(40, 192, 96, 0.08);
+}
+.opt-text {
+  font-size: 10px;
+  color: #333333;
+}
+.opt-text-sel {
+  color: #28c060;
+  font-weight: bold;
+}
+.footer-item {
+  width: 250px;
+  background-color: #ffffff;
+}
+.bottom-bar {
+  width: 250px;
+  height: 72px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+}
+.result-btn {
+  width: 218px;
+  height: 44px;
+  border-radius: 22px;
+  align-items: center;
+  justify-content: center;
+}
+.btn-active {
+  background-color: #28c060;
+}
+.btn-disabled {
+  background-color: #c8e6d4;
+}
+.result-btn-text {
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: bold;
+}
+</style>

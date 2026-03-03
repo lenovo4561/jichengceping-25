@@ -1,0 +1,199 @@
+<template>
+  <list class="page-list">
+    <!-- 顶部背景区 -->
+    <list-item type="header" class="header-item">
+      <div class="header-area">
+        <image class="header-bg" src="/assets/img/shoujibizhi-bg.png"></image>
+        <div class="header-gradient"></div>
+      </div>
+    </list-item>
+
+    <!-- 日期行 -->
+    <list-item type="date-row" class="date-item">
+      <div class="date-row">
+        <div class="date-bar"></div>
+        <text class="date-text">{{dateStr}}</text>
+      </div>
+    </list-item>
+
+    <!-- 运势分区：循环渲染 -->
+    <list-item type="section" class="section-item" for="{{(idx, sec) in sections}}">
+      <div class="fortune-section">
+        <text class="sec-title">{{sec.icon}}{{sec.title}}</text>
+        <text class="sec-body">{{sec.body}}</text>
+      </div>
+    </list-item>
+
+    <!-- 底部留白 -->
+    <list-item type="footer" class="footer-item">
+      <div style="width: 250px; height: 24px;"></div>
+    </list-item>
+  </list>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      dateStr: '',
+      sections: [
+        {
+          icon: '❤️',
+          title: '爱情',
+          body: '今日情感氛围温和，单身者易在日常通勤、兴哈趣社群中遇到三观契合的人，不必急于表露心意，单的问候与共同话题的探讨，就能为后续相处埋下伏笔；有伴者则适合放下工作琐事，与伴侣进行一场"无手机"的深度对话，聊聊近期的小期待与小烦恼，那些被忙碌忽略的细节，会成为感情升温的催化剂，平淡相处中尽显安稳。'
+        },
+        {
+          icon: '💼',
+          title: '事业',
+          body: '工作进入平稳推进期，适合启动筹备已久的小项目或梳理积压的工作文档。与同事的协作默契度提升，遇到问题时主动沟通，能快速找到解决方案，避免无效内耗。职场新人可抓住机会向资深前辈请教，对方的经验分享会让你少走弯路；管理层则适合制定短期目标，明确团队分工，为后续高效执行定基奠有。'
+        },
+        {
+          icon: '💰',
+          title: '财富',
+          body: '今日财运以稳为主，正财收入无波动，适合做好财务规划，梳理本月收支明细，标记出非必要支出项，为后续储蓄打下基础。偏财方面需保持冷静，避免冲动消费，尤其是网购时要理性筛选，拒绝"凑单"诱惑。投资者不宜轻易追涨，可关注长期稳健型产品，等待更明朗的入场时机。'
+        },
+        {
+          icon: '🏥',
+          title: '健康',
+          body: '身体整体状态良好，但久坐工作者需注意颈椎和腰椎保养，每隔一小时起身活动5分钟，做做肩颈拉伸，可有效缓解疲劳积累。饮食上适合清淡为主，减少油腻和辛辣刺激，多补充水分和新鲜蔬果，为身体补充足够的维生素。情绪管理也很重要，遇到压力时可通过散步、听音乐等方式适当放松，保持心态平和。'
+        },
+        {
+          icon: '🍀',
+          title: '幸运提示',
+          body: '今日幸运颜色为橙色，幸运数字为3和8，幸运方位为东南方。出行时可佩戴橙色系配饰提升整体运势，与朋友保持联系，彼此分享正能量，好运将在不期而遇中悄然降临。'
+        }
+      ]
+    }
+  },
+  onInit() {
+    const now = new Date()
+    const y = now.getFullYear()
+    const m = String(now.getMonth() + 1).padStart(2, '0')
+    const d = String(now.getDate()).padStart(2, '0')
+    this.dateStr = y + '年' + m + '月' + d + '日'
+  }
+}
+</script>
+
+<style>
+.page-list {
+  flex: 1;
+  width: 250px;
+  background-color: #ffffff;
+}
+
+/* ---- 顶部背景 ---- */
+.header-item {
+  width: 250px;
+}
+.header-area {
+  width: 250px;
+  height: 110px;
+  position: relative;
+  flex-direction: column;
+}
+.header-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 110px;
+  object-fit: cover;
+}
+.title-row {
+  position: absolute;
+  top: 28px;
+  left: 14px;
+  flex-direction: row;
+  align-items: center;
+}
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  margin-right: 6px;
+  object-fit: cover;
+}
+.header-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ff5500;
+}
+.header-sub {
+  position: absolute;
+  top: 68px;
+  left: 14px;
+  font-size: 12px;
+  color: #ff7730;
+  letter-spacing: 1px;
+}
+.character-img {
+  position: absolute;
+  right: -4px;
+  top: 0;
+  width: 130px;
+  height: 155px;
+  object-fit: contain;
+}
+.header-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 250px;
+  height: 48px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+}
+
+/* ---- 日期行 ---- */
+.date-item {
+  width: 250px;
+}
+.date-row {
+  width: 222px;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px 14px 4px 14px;
+}
+.date-bar {
+  width: 4px;
+  height: 18px;
+  border-radius: 2px;
+  background-color: #ff5500;
+  margin-right: 8px;
+}
+.date-text {
+  font-size: 15px;
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+/* ---- 运势分区 ---- */
+.section-item {
+  width: 250px;
+}
+.fortune-section {
+  width: 222px;
+  flex-direction: column;
+  margin: 14px 14px 0 14px;
+  padding-bottom: 14px;
+  border-bottom-width: 1px;
+  border-bottom-color: #f0f0f0;
+  border-bottom-style: solid;
+}
+.sec-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+.sec-body {
+  font-size: 13px;
+  color: #333333;
+  line-height: 24px;
+}
+
+/* ---- 底部 ---- */
+.footer-item {
+  width: 250px;
+}
+</style>

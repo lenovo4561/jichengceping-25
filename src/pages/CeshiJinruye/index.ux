@@ -1,0 +1,230 @@
+<template>
+  <div class="page-wrapper">
+    <!-- 顶部背景区 -->
+    <div class="header-area">
+      <image class="header-bg" src="/assets/img/ceshijinruye-bg.png"></image>
+      <!-- 导航栏 -->
+      <div class="nav-bar">
+        <div class="back-btn" onclick="goBack">
+          <image class="back-icon" src="/assets/img/back.png"></image>
+        </div>
+        <text class="nav-title">{{testTitle}}</text>
+        <div class="nav-placeholder"></div>
+      </div>
+      <!-- 卡通人物 -->
+      <image class="character-img" src="/assets/img/cepingrenwu.png"></image>
+      <!-- 底部渐变叠层 -->
+      <div class="header-gradient"></div>
+    </div>
+
+    <!-- 磨砂内容面板 -->
+    <div class="frosted-panel">
+      <!-- 测试说明卡片 -->
+      <div class="desc-card">
+        <div class="desc-title-row">
+          <div class="desc-bar"></div>
+          <text class="desc-title">测试说明</text>
+        </div>
+        <div class="desc-row">
+          <text class="bullet">•</text>
+          <text class="desc-text">测试一共32题，请尽量在10分钟内完成</text>
+        </div>
+        <div class="desc-row">
+          <text class="bullet">•</text>
+          <text class="desc-text">请仔细阅读题目，根据最近一周之内这些情况对你影响的实际感觉，选择最符合的一项</text>
+        </div>
+        <div class="desc-row">
+          <text class="bullet">•</text>
+          <text class="desc-text">本测试主要对抑郁、焦虑、人际关系敏感症状进行简单评估</text>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部按钮 -->
+    <div class="bottom-bar">
+      <div class="start-btn" onclick="startTest">
+        <text class="start-btn-text">开始测试</text>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+
+export default {
+  data() {
+    return {
+      testTitle: '心理状态测试'
+    }
+  },
+  onInit() {
+    if (this.$page && this.$page.query && this.$page.query.testTitle) {
+      this.testTitle = this.$page.query.testTitle
+    }
+  },
+  goBack() {
+    router.back()
+  },
+  startTest() {
+    router.push({
+      uri: '/pages/CeshiDatiPage',
+      params: { catTitle: this.testTitle, testName: this.testTitle }
+    })
+  }
+}
+</script>
+
+<style>
+.page-wrapper {
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
+/* 顶部背景区 */
+.header-area {
+  width: 250px;
+  height: 250px;
+  position: relative;
+  flex-direction: column;
+}
+.header-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+}
+.header-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 250px;
+  height: 80px;
+  background: linear-gradient(to bottom, rgba(248,248,250,0) 0%, rgba(248,248,250,0.96) 100%);
+}
+.nav-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 44px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+}
+.back-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background-color: rgba(255, 255, 255, 0.3);
+  align-items: center;
+  justify-content: center;
+}
+.back-icon {
+  width: 6px;
+  height: 10px;
+  object-fit: contain;
+}
+.nav-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #1a1a1a;
+}
+.nav-placeholder {
+  width: 28px;
+}
+
+/* 卡通人物：居中显示在背景图中下部，bottom留出磨砂面板overlap高度 */
+.character-img {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  width: 250px;
+  height: 200px;
+  object-fit: contain;
+}
+
+/* 磨砂内容面板 */
+.frosted-panel {
+  flex: 1;
+  flex-direction: column;
+  width: 250px;
+  margin-top: -14px;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  background-color: rgba(248, 248, 250, 0.97);
+  padding: 12px 12px 0 12px;
+}
+
+/* 测试说明卡片 */
+.desc-card {
+  width: 226px;
+  flex-direction: column;
+  background-color: rgba(40, 192, 96, 0.07);
+  border-radius: 10px;
+  padding: 14px 14px 16px 14px;
+}
+.desc-title-row {
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.desc-bar {
+  width: 3px;
+  height: 14px;
+  background-color: #ff5522;
+  border-radius: 2px;
+  margin-right: 6px;
+}
+.desc-title {
+  font-size: 11px;
+  font-weight: bold;
+  color: #1a1a1a;
+}
+.desc-row {
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+.bullet {
+  font-size: 11px;
+  color: #333333;
+  margin-right: 6px;
+  margin-top: 1px;
+}
+.desc-text {
+  flex: 1;
+  font-size: 9px;
+  color: #333333;
+  line-height: 16px;
+}
+
+/* 底部按钮 */
+.bottom-bar {
+  width: 250px;
+  height: 68px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+}
+.start-btn {
+  width: 218px;
+  height: 44px;
+  border-radius: 22px;
+  background-color: #28c060;
+  align-items: center;
+  justify-content: center;
+}
+.start-btn-text {
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: bold;
+}
+</style>

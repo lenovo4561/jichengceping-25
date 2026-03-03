@@ -1,0 +1,206 @@
+<template>
+  <div class="page-wrapper">
+    <list class="main-list">
+      <!-- 顶部背景图 -->
+      <list-item type="banner" class="banner-item">
+        <image class="top-bg" src="/assets/img/xinlijiankang-bg.png"></image>
+      </list-item>
+
+      <!-- 磨砂面板起始：三图网格 -->
+      <list-item type="grid" class="grid-item panel-start">
+        <div class="card-grid">
+          <!-- 左：大图 -->
+          <div class="card-large" onclick="goTest('心理状态测试')">
+            <image class="img-large" src="/assets/img/1.png"></image>
+            <div class="card-label-wrap">
+              <text class="card-label">心理状态测试</text>
+            </div>
+          </div>
+          <!-- 右：两个小图 -->
+          <div class="card-right-col">
+            <div class="card-small" onclick="goTest('抑郁风险评估')">
+              <image class="img-small" src="/assets/img/1.png"></image>
+              <div class="card-label-wrap card-label-right">
+                <text class="card-label">抑郁风险评估</text>
+              </div>
+            </div>
+            <div class="card-small card-small-bottom" onclick="goTest('焦虑测试')">
+              <image class="img-small" src="/assets/img/1.png"></image>
+              <div class="card-label-wrap">
+                <text class="card-label">焦虑测试</text>
+              </div>
+            </div>
+          </div>
+        </div>
+      </list-item>
+
+      <!-- 文章内容 -->
+      <list-item type="article" class="article-item">
+        <div class="article-wrap">
+          <text class="article-title">一、心理健康的核心定义与标准</text>
+          <text class="article-body">心理健康并非"没有心理问题"，而是一种动态的心理平衡状态，指个体能够正确认识自我、调节情绪、适应环境，同时具备良好的人际交往能力和心理韧性，能够应对生活中的挫折与压力，保持身心和谐。</text>
+          <text class="article-body">心理健康的核心标准包括：</text>
+          <text class="article-body">1.智力正常，能正常认知周围事物、开展学习和工作；</text>
+          <text class="article-body">2.情绪稳定，能合理表达和调节喜怒哀乐，避免长期处于极端情绪中；</text>
+          <text class="article-body">3.人际关系和谐，能与他人友好相处，懂得尊重与包容；</text>
+          <text class="article-body">4.自我接纳，了解自身优缺点，不盲目自卑或自负；</text>
+          <text class="article-body">5.适应能力强，能快速适应环境变化，主动应对生活中的挑战；</text>
+          <text class="article-body">6.有明确的生活目标，对未来充满希望，具备积极的生活态度。需要注意的是，心理健康是一个连续谱，每个人都可能在某些阶段出现心理困扰，这是正常的生命历程，关键在于能否及时调节与寻求支持。</text>
+
+          <text class="article-title">二、常见心理问题与早期识别</text>
+          <text class="article-body">焦虑和抑郁是最常见的心理健康问题。焦虑表现为持续的担忧、紧张、坐立不安，伴随心跳加速、出汗等躯体反应；抑郁则以持续的低落情绪、兴趣减退、精力不足为核心症状，严重时可能出现自伤念头。早期识别这些信号，在症状轻微时及时干预，是保护心理健康的关键一步。</text>
+
+          <text class="article-title">三、维护心理健康的科学方法</text>
+          <text class="article-body">规律作息与充足睡眠是心理健康的基础。运动被证明能有效改善情绪，每周150分钟中等强度运动可显著降低焦虑和抑郁风险。冥想与正念练习帮助人们专注当下，减少反刍思维。建立稳固的社会支持网络，与亲友保持联结，是应对压力的重要缓冲。当自我调节效果有限时，及时寻求专业心理咨询或医疗帮助，是勇气而非软弱的体现。</text>
+        </div>
+      </list-item>
+
+      <!-- 底部留白 -->
+      <list-item type="spacer" class="spacer-item"></list-item>
+    </list>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+
+export default {
+  data() {
+    return {}
+  },
+  onInit() {},
+  goTest(title) {
+    router.push({
+      uri: '/pages/CeshiJinruye',
+      params: { testTitle: title }
+    })
+  }
+}
+</script>
+
+<style>
+.page-wrapper {
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+.main-list {
+  flex: 1;
+  width: 250px;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+.banner-item {
+  flex-direction: column;
+  position: relative;
+}
+.top-bg {
+  width: 250px;
+  height: 110px;
+  object-fit: cover;
+}
+
+/* 磨砂面板起始 */
+.panel-start {
+  margin-top: -14px;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  background-color: #ffffff;
+}
+
+/* 三图网格 */
+.grid-item {
+  flex-direction: column;
+  padding: 14px 10px 0 10px;
+}
+.card-grid {
+  flex-direction: row;
+  justify-content: space-between;
+  width: 230px;
+}
+.card-large {
+  width: 112px;
+  height: 174px;
+  border-radius: 10px;
+  position: relative;
+}
+.img-large {
+  width: 112px;
+  height: 174px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.card-right-col {
+  flex-direction: column;
+  width: 112px;
+  justify-content: space-between;
+}
+.card-small {
+  width: 112px;
+  height: 83px;
+  border-radius: 10px;
+  position: relative;
+}
+.card-small-bottom {
+  margin-top: 8px;
+}
+.img-small {
+  width: 112px;
+  height: 83px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.card-label-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 112px;
+  height: 32px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background-color: rgba(0,0,0,0.38);
+  justify-content: center;
+  padding-left: 8px;
+}
+.card-label-right {
+  padding-left: 0;
+  padding-right: 8px;
+  justify-content: center;
+  align-items: flex-end;
+}
+.card-label {
+  font-size: 10px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+/* 文章区 */
+.article-item {
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 14px 12px 0 12px;
+}
+.article-wrap {
+  flex-direction: column;
+  width: 226px;
+}
+.article-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-top: 14px;
+  margin-bottom: 8px;
+}
+.article-body {
+  font-size: 11px;
+  color: #444444;
+  line-height: 20px;
+  margin-bottom: 6px;
+}
+.spacer-item {
+  height: 30px;
+  background-color: #ffffff;
+}
+</style>

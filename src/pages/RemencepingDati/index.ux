@@ -1,0 +1,262 @@
+﻿<template>
+  <div class="page-wrapper">
+    <!-- 顶部背景区 -->
+    <div class="header-area">
+      <image class="header-bg" src="/assets/img/remencepingdati-bg.png"></image>
+      <div class="nav-bar">
+        <div class="back-btn" onclick="goBack">
+          <image class="back-icon" src="/assets/img/back.png"></image>
+        </div>
+        <div style="width: 22px;"></div>
+      </div>
+      <div class="header-gradient"></div>
+    </div>
+
+    <!-- 白色内容面板 -->
+    <div class="content-panel">
+      <!-- 第 X 题 badge -->
+      <div class="q-badge">
+        <text class="q-badge-text">第 {{currentIdx + 1}} 题</text>
+      </div>
+      <!-- 题目文字 -->
+      <text class="q-text">{{currentQ.question}}</text>
+      <!-- 四个选项，纵向排列 -->
+      <div class="option-item {{answers[currentIdx] === 0 ? 'opt-sel' : 'opt-nor'}}" onclick="selectOpt(0)">
+        <text class="opt-text {{answers[currentIdx] === 0 ? 'opt-text-sel' : ''}}">A.{{currentQ.opts[0]}}</text>
+      </div>
+      <div class="option-item {{answers[currentIdx] === 1 ? 'opt-sel' : 'opt-nor'}}" onclick="selectOpt(1)">
+        <text class="opt-text {{answers[currentIdx] === 1 ? 'opt-text-sel' : ''}}">B.{{currentQ.opts[1]}}</text>
+      </div>
+      <div class="option-item {{answers[currentIdx] === 2 ? 'opt-sel' : 'opt-nor'}}" onclick="selectOpt(2)">
+        <text class="opt-text {{answers[currentIdx] === 2 ? 'opt-text-sel' : ''}}">C.{{currentQ.opts[2]}}</text>
+      </div>
+      <div class="option-item {{answers[currentIdx] === 3 ? 'opt-sel' : 'opt-nor'}}" onclick="selectOpt(3)">
+        <text class="opt-text {{answers[currentIdx] === 3 ? 'opt-text-sel' : ''}}">D.{{currentQ.opts[3]}}</text>
+      </div>
+    </div>
+
+    <!-- 底部按钮 -->
+    <div class="bottom-bar">
+      <div class="next-btn" onclick="nextOrResult">
+        <text class="next-btn-text">{{isLast ? '查看结论' : '下一题'}}</text>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+
+export default {
+  data() {
+    return {
+      catTitle: '心理状态',
+      testName: '心理状态测试',
+      currentIdx: 0,
+      answers: [-1, -1, -1, -1, -1],
+      questions: [
+        {
+          question: '在《西游记》中，会七十二变的人是谁？',
+          opts: ['孙悟空', '唐僧', '猪八戒', '沙悟净']
+        },
+        {
+          question: '我觉得闷闷不乐，情绪低沉',
+          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
+        },
+        {
+          question: '我觉得一天之中早晨最好',
+          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
+        },
+        {
+          question: '我感到精力充沛，干劲十足',
+          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
+        },
+        {
+          question: '我容易感到心烦意乱，难以平静',
+          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
+        }
+      ]
+    }
+  },
+  computed: {
+    currentQ() {
+      return this.questions[this.currentIdx]
+    },
+    isLast() {
+      return this.currentIdx === this.questions.length - 1
+    }
+  },
+  onInit() {
+    if (this.$page && this.$page.query) {
+      const q = this.$page.query
+      if (q.catTitle) this.catTitle = q.catTitle
+      if (q.testName) this.testName = q.testName
+    }
+  },
+  goBack() {
+    router.back()
+  },
+  selectOpt(optIdx) {
+    const newAnswers = this.answers.slice()
+    newAnswers[this.currentIdx] = optIdx
+    this.answers = newAnswers
+  },
+  nextOrResult() {
+    if (this.answers[this.currentIdx] === -1) return
+    if (this.isLast) {
+      router.replace({
+        uri: '/pages/RemencepingJielun',
+        params: { answers: this.answers.join(',') }
+      })
+    } else {
+      this.currentIdx = this.currentIdx + 1
+    }
+  }
+}
+</script>
+
+<style>
+.page-wrapper {
+  flex: 1;
+  flex-direction: column;
+  width: 250px;
+  background-color: #f5f5f5;
+}
+/* 顶部背景区 */
+.header-area {
+  width: 250px;
+  height: 150px;
+  position: relative;
+  flex-direction: column;
+}
+.header-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 150px;
+  object-fit: cover;
+}
+.header-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 250px;
+  height: 50px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 100%);
+}
+.nav-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 44px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+}
+.back-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background-color: rgba(255, 255, 255, 0.3);
+  align-items: center;
+  justify-content: center;
+}
+.back-icon {
+  width: 6px;
+  height: 10px;
+  object-fit: contain;
+}
+.character-img {
+  position: absolute;
+  right: 0;
+  bottom: -10px;
+  width: 115px;
+  height: 140px;
+  object-fit: contain;
+}
+/* 白色内容面板 */
+.content-panel {
+  flex: 1;
+  flex-direction: column;
+  width: 250px;
+  margin-top: -18px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  background-color: #ffffff;
+  padding: 20px 16px 0 16px;
+}
+/* 第 X 题 badge */
+.q-badge {
+  background-color: rgba(255, 100, 30, 0.12);
+  border-radius: 6px;
+  padding: 5px 12px;
+  align-self: flex-start;
+  margin-bottom: 18px;
+}
+.q-badge-text {
+  font-size: 12px;
+  font-weight: bold;
+  color: #ff6420;
+}
+/* 题目文字 */
+.q-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1a1a1a;
+  line-height: 22px;
+  margin-bottom: 22px;
+}
+/* 选项 */
+.option-item {
+  width: 218px;
+  min-height: 46px;
+  border-radius: 10px;
+  border-width: 1px;
+  border-style: solid;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  justify-content: flex-start;
+  align-items: center;
+}
+.opt-nor {
+  border-color: #e0e0e0;
+  background-color: #f9f9f9;
+}
+.opt-sel {
+  border-color: #28c060;
+  background-color: rgba(40, 192, 96, 0.08);
+}
+.opt-text {
+  font-size: 13px;
+  color: #333333;
+}
+.opt-text-sel {
+  color: #28c060;
+  font-weight: bold;
+}
+/* 底部按钮 */
+.bottom-bar {
+  width: 250px;
+  height: 76px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+}
+.next-btn {
+  width: 218px;
+  height: 48px;
+  border-radius: 24px;
+  background-color: #28c060;
+  align-items: center;
+  justify-content: center;
+}
+.next-btn-text {
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: bold;
+}
+</style>

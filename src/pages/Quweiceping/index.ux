@@ -1,0 +1,301 @@
+<template>
+  <div class="page-wrapper">
+    <list class="main-list">
+      <!-- 顶部背景图 -->
+      <list-item type="banner" class="banner-item">
+        <image class="top-bg" src="/assets/img/remenceping-bg.png"></image>
+        <!-- 磨砂渐变叠层：从透明→不透明，高度100px，叠在背景图底部 -->
+        <div class="frosted-gradient"></div>
+      </list-item>
+
+      <!-- 磨砂面板：第一个分类header上移叠在背景图之上 -->
+        <!-- 分类1（带圆角上移，磨砂起始） -->
+        <list-item type="cat-header" class="cat-header-item panel-start">
+          <div class="category-header">
+            <div class="header-left">
+              <div class="orange-bar"></div>
+              <text class="category-title">{{cat0.title}}</text>
+            </div>
+            <div class="header-right" onclick="viewMore(cat0.title)">
+              <text class="view-more-text">查看更多</text>
+              <image class="arrow-icon" src="/assets/img/jiantou.png"></image>
+            </div>
+          </div>
+        </list-item>
+        <list-item type="cat0-row" class="row-item">
+          <div class="grid-row">
+            <div class="card" onclick="goDetail">
+              <div class="card-image-box">
+                <image class="card-img" src="{{cat0.items[0].bg}}"></image>
+                <image class="hot-badge" src="/assets/img/HOT.png"></image>
+                <div class="count-tag"><text class="count-text">{{cat0.items[0].count}}</text></div>
+              </div>
+              <text class="card-title">{{cat0.items[0].title}}</text>
+            </div>
+            <div class="card" onclick="goDetail">
+              <div class="card-image-box">
+                <image class="card-img" src="{{cat0.items[1].bg}}"></image>
+                <image class="hot-badge" src="/assets/img/HOT.png"></image>
+                <div class="count-tag"><text class="count-text">{{cat0.items[1].count}}</text></div>
+              </div>
+              <text class="card-title">{{cat0.items[1].title}}</text>
+            </div>
+          </div>
+        </list-item>
+
+        <!-- 分类2 -->
+        <list-item type="cat-header2" class="cat-header-item">
+          <div class="category-header">
+            <div class="header-left">
+              <div class="orange-bar"></div>
+              <text class="category-title">{{cat1.title}}</text>
+            </div>
+            <div class="header-right" onclick="viewMore">
+              <text class="view-more-text">查看更多</text>
+              <image class="arrow-icon" src="/assets/img/jiantou.png"></image>
+            </div>
+          </div>
+        </list-item>
+        <list-item type="cat1-row" class="row-item">
+          <div class="grid-row">
+            <div class="card" onclick="goDetail">
+              <div class="card-image-box">
+                <image class="card-img" src="{{cat1.items[0].bg}}"></image>
+                <image class="hot-badge" src="/assets/img/HOT.png"></image>
+                <div class="count-tag"><text class="count-text">{{cat1.items[0].count}}</text></div>
+              </div>
+              <text class="card-title">{{cat1.items[0].title}}</text>
+            </div>
+            <div class="card" onclick="goDetail">
+              <div class="card-image-box">
+                <image class="card-img" src="{{cat1.items[1].bg}}"></image>
+                <image class="hot-badge" src="/assets/img/HOT.png"></image>
+                <div class="count-tag"><text class="count-text">{{cat1.items[1].count}}</text></div>
+              </div>
+              <text class="card-title">{{cat1.items[1].title}}</text>
+            </div>
+          </div>
+        </list-item>
+
+        <!-- 分类3 -->
+        <list-item type="cat-header3" class="cat-header-item">
+          <div class="category-header">
+            <div class="header-left">
+              <div class="orange-bar"></div>
+              <text class="category-title">{{cat2.title}}</text>
+            </div>
+            <div class="header-right" onclick="viewMore">
+              <text class="view-more-text">查看更多</text>
+              <image class="arrow-icon" src="/assets/img/jiantou.png"></image>
+            </div>
+          </div>
+        </list-item>
+        <list-item type="cat2-row" class="row-item">
+          <div class="grid-row">
+            <div class="card" onclick="goDetail">
+              <div class="card-image-box">
+                <image class="card-img" src="{{cat2.items[0].bg}}"></image>
+                <image class="hot-badge" src="/assets/img/HOT.png"></image>
+                <div class="count-tag"><text class="count-text">{{cat2.items[0].count}}</text></div>
+              </div>
+              <text class="card-title">{{cat2.items[0].title}}</text>
+            </div>
+            <div class="card" onclick="goDetail">
+              <div class="card-image-box">
+                <image class="card-img" src="{{cat2.items[1].bg}}"></image>
+                <image class="hot-badge" src="/assets/img/HOT.png"></image>
+                <div class="count-tag"><text class="count-text">{{cat2.items[1].count}}</text></div>
+              </div>
+              <text class="card-title">{{cat2.items[1].title}}</text>
+            </div>
+          </div>
+        </list-item>
+
+        <!-- 底部留白 -->
+        <list-item type="spacer" class="spacer-item"></list-item>
+    </list>
+  </div>
+</template>
+
+<script>
+import prompt from '@system.prompt'
+import router from '@system.router'
+
+export default {
+  data() {
+    return {
+      cat0: {
+        title: '职场人必测',
+        items: [
+          { title: '心理压力测试', count: '113,256人测过', bg: '/assets/img/1.png' },
+          { title: '抑郁症测试专业版', count: '113,256人测过', bg: '/assets/img/1.png' }
+        ]
+      },
+      cat1: {
+        title: '情感状态自测',
+        items: [
+          { title: '心理压力测试', count: '113,256人测过', bg: '/assets/img/1.png' },
+          { title: '抑郁症测试专业版', count: '113,256人测过', bg: '/assets/img/1.png' }
+        ]
+      },
+      cat2: {
+        title: '趣味灵魂测试',
+        items: [
+          { title: '心理压力测试', count: '113,256人测过', bg: '/assets/img/1.png' },
+          { title: '抑郁症测试专业版', count: '113,256人测过', bg: '/assets/img/1.png' }
+        ]
+      }
+    }
+  },
+  onInit() {},
+  viewMore(title) {
+    router.push({
+      uri: '/pages/GengduoCeping',
+      params: { catTitle: title || '职场人必测' }
+    })
+  },
+  goDetail() {
+    prompt.showToast({ message: '进入测试' })
+  }
+}
+</script>
+
+<style>
+.page-wrapper {
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0;
+}
+.main-list {
+  flex: 1;
+  width: 250px;
+  height: 100%;
+  background-color: #f0f0f0;
+}
+.banner-item {
+  flex-direction: column;
+  position: relative;
+}
+.frosted-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 250px;
+  height: 100px;
+  background: linear-gradient(to bottom, rgba(248,248,250,0) 0%, rgba(248,248,250,0.92) 100%);
+}
+.top-bg {
+  width: 250px;
+  height: 100px;
+  object-fit: cover;
+}
+/* 磨砂起始：上移叠在背景图上，左上右上圆角 */
+.panel-start {
+  margin-top: -14px;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  background-color: rgba(248, 248, 250, 0.92);
+}
+.cat-header-item {
+  flex-direction: column;
+  padding: 0 10px;
+  background-color: rgba(248, 248, 250, 0.92);
+}
+.category-header {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 36px;
+  width: 230px;
+}
+.header-left {
+  flex-direction: row;
+  align-items: center;
+}
+.orange-bar {
+  width: 3px;
+  height: 12px;
+  background-color: #ff5500;
+  border-radius: 2px;
+  margin-right: 6px;
+}
+.category-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #1a1a1a;
+}
+.header-right {
+  flex-direction: row;
+  align-items: center;
+}
+.view-more-text {
+  font-size: 10px;
+  color: #28b868;
+  margin-right: 4px;
+}
+.arrow-icon {
+  width: 8px;
+  height: 12px;
+  object-fit: contain;
+}
+.row-item {
+  flex-direction: column;
+  padding: 0 10px;
+  margin-bottom: 8px;
+  background-color: rgba(248, 248, 250, 0.92);
+}
+.grid-row {
+  flex-direction: row;
+  justify-content: space-between;
+  width: 230px;
+}
+.card {
+  width: 110px;
+  flex-direction: column;
+}
+.card-image-box {
+  width: 110px;
+  height: 75px;
+  border-radius: 6px;
+  position: relative;
+}
+.card-img {
+  width: 110px;
+  height: 75px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+.hot-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 12px;
+  object-fit: contain;
+}
+.count-tag {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  background-color: rgba(0,0,0,0.5);
+  border-radius: 8px;
+  padding: 2px 5px;
+}
+.count-text {
+  font-size: 8px;
+  color: #ffffff;
+}
+.card-title {
+  margin-top: 5px;
+  font-size: 10px;
+  color: #333333;
+  lines: 1;
+  text-overflow: ellipsis;
+  margin-bottom:10px
+}
+.spacer-item {
+  height: 20px;
+}
+</style>

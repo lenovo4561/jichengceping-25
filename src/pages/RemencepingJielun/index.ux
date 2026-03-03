@@ -1,0 +1,238 @@
+<template>
+  <div class="page-wrapper">
+    <!-- 顶部背景图 + 导航栏 -->
+    <div class="header-area">
+      <image class="header-bg" src="/assets/img/remencepingdati-bg.png"></image>
+      <div class="nav-bar">
+        <div class="back-btn" onclick="goBack">
+          <image class="back-icon" src="/assets/img/back.png"></image>
+        </div>
+        <div class="nav-placeholder"></div>
+      </div>
+      <div class="header-gradient"></div>
+    </div>
+
+    <!-- 结论面板 -->
+    <div class="frosted-panel">
+      <div class="blur-layer"></div>
+      <div class="frost-overlay"></div>
+      <!-- 结论 tag -->
+      <div class="result-tag-row">
+        <div class="result-tag">
+          <text class="result-tag-text">结论</text>
+        </div>
+      </div>
+
+      <!-- 结论内容 -->
+      <text class="result-text">{{resultText}}</text>
+    </div>
+
+    <!-- 底部两个按钮 -->
+    <div class="bottom-bar">
+      <div class="btn-retry" onclick="retry">
+        <text class="btn-text">重新测试</text>
+      </div>
+      <div class="btn-home" onclick="goHome">
+        <text class="btn-text">返回首页</text>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+
+const RESULTS = [
+  '你是一个冷静理智的人，面对问题善于独立思考，不轻易被情绪左右。遇到困难时，你总是能找到最合适的解决方法，身边的人都十分信赖你的判断力。',
+  '你是一个感性细腻的人，对周围的人和事充满关注与温情。你善于体察他人情绪，总是第一个伸出援手，是大家心中最可靠的朋友。',
+  '你目前的抗挫能力有待提升哦~ 面对挫折时，你容易陷入崩溃、自我否定和内耗，习惯逃避、放弃，缺乏直面困境的勇气和解决问题的能力。其实人生难免有低谷，不必过分苛责自己，试着从小挫折开始，慢慢锻炼自己的心态，学会冷静复盘、主动尝试，你的抗挫力一定会慢慢增强，慢慢成为更强大的自己。'
+]
+
+export default {
+  data() {
+    return {
+      resultText: ''
+    }
+  },
+  onInit() {
+    let idx = 2
+    if (this.$page && this.$page.query && this.$page.query.answers) {
+      const answers = this.$page.query.answers.split(',').map(Number)
+      const sum = answers.reduce((a, b) => a + b, 0)
+      idx = sum % 3
+    }
+    this.resultText = RESULTS[idx]
+  },
+  goBack() {
+    router.back()
+  },
+  retry() {
+    router.replace({ uri: '/pages/RemencepingDati' })
+  },
+  goHome() {
+    router.clear()
+    router.replace({ uri: '/pages/Main' })
+  }
+}
+</script>
+
+<style>
+.page-wrapper {
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
+/* 顶部背景区 */
+.header-area {
+  width: 250px;
+  height: 150px;
+  position: relative;
+  flex-direction: column;
+}
+.header-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 150px;
+  object-fit: cover;
+}
+.header-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 250px;
+  height: 50px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 100%);
+}
+.nav-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 44px;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 14px;
+}
+.back-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background-color: rgba(255, 255, 255, 0.3);
+  align-items: center;
+  justify-content: center;
+}
+.back-icon {
+  width: 6px;
+  height: 10px;
+  object-fit: contain;
+}
+.character-img {
+  position: absolute;
+  right: 0;
+  bottom: -10px;
+  width: 115px;
+  height: 140px;
+  object-fit: contain;
+}
+.nav-placeholder {
+  flex: 1;
+}
+
+/* 结论面板 */
+.frosted-panel {
+  flex: 1;
+  flex-direction: column;
+  width: 250px;
+  margin-top: -18px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  background-color: transparent;
+  padding: 20px 16px 0 16px;
+  position: relative;
+  overflow: hidden;
+}
+.blur-layer {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 270px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.18);
+  filter: blur(10px);
+}
+.frost-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.60) 0%,
+    rgba(255, 255, 255, 1.0) 15%,
+    rgba(255, 255, 255, 1.0) 100%
+  );
+}
+
+/* 结论 tag */
+.result-tag-row {
+  flex-direction: row;
+  margin-bottom: 16px;
+}
+.result-tag {
+  background-color: rgba(255, 100, 30, 0.12);
+  border-radius: 6px;
+  padding: 4px 10px;
+}
+.result-tag-text {
+  font-size: 11px;
+  color: #ff6420;
+  font-weight: bold;
+}
+
+/* 结论文字 */
+.result-text {
+  font-size: 13px;
+  color: #1a1a1a;
+  line-height: 24px;
+}
+
+/* 底部两个按钮 */
+.bottom-bar {
+  width: 250px;
+  height: 70px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  background-color: #f5f5f5;
+}
+.btn-retry {
+  width: 108px;
+  height: 42px;
+  border-radius: 21px;
+  background-color: #ff6420;
+  align-items: center;
+  justify-content: center;
+}
+.btn-home {
+  width: 108px;
+  height: 42px;
+  border-radius: 21px;
+  background-color: #28c060;
+  align-items: center;
+  justify-content: center;
+}
+.btn-text {
+  font-size: 13px;
+  color: #ffffff;
+  font-weight: bold;
+}
+</style>

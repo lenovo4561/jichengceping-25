@@ -1,0 +1,428 @@
+<template>
+  <div class="root-wrap">
+    <list class="page-list">
+      <!-- 顶部背景区 -->
+      <list-item type="header" class="header-item">
+        <div class="header-area">
+          <image class="header-bg" src="/assets/img/shoujibizhi-bg-1.png"></image>
+          <div class="nav-bar">
+            <div class="back-btn" onclick="goBack">
+              <image class="back-icon" src="/assets/img/back.png"></image>
+            </div>
+            <text class="nav-title">心理状态测试</text>
+          </div>
+          <div class="header-gradient"></div>
+        </div>
+      </list-item>
+
+      <!-- 雷达图卡片 -->
+      <list-item type="radar-card" class="card-item">
+        <div class="radar-card-wrap">
+          <div class="blur-layer"></div>
+          <div class="frost-overlay"></div>
+          <div class="white-card">
+            <!-- 结论 tag -->
+            <div class="tag-row">
+              <div class="result-tag">
+                <text class="result-tag-text">结论</text>
+              </div>
+            </div>
+            <!-- 雷达图 Canvas -->
+            <div class="canvas-wrap">
+              <canvas id="radarCanvas" class="radar-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </list-item>
+
+      <!-- 抑郁结果块 -->
+      <list-item type="section-1" class="section-item">
+        <div class="result-section">
+          <text class="section-title">😞抑郁</text>
+          <text class="section-body">你目前的抗挫能力有待提升哦~ 面对挫折时，你容易陷入崩溃、自我否定和内耗，习惯逃避、放弃，缺乏直面困境的勇气和解决问题的能力。其实人生难免有低谷，不必过分苛责自己，试着从小挫折开始，慢慢锻炼自己的心态，学会冷静复盘、主动尝试，你的抗挫力一定会慢慢增强，慢慢成为更强大的自己</text>
+        </div>
+      </list-item>
+
+      <!-- 焦虑结果块 -->
+      <list-item type="section-2" class="section-item">
+        <div class="result-section">
+          <text class="section-title">😟焦虑</text>
+          <text class="section-body">你目前的抗挫能力有待提升哦~ 面对挫折时，你容易陷入崩溃、自我否定和内耗，习惯逃避、放弃，缺乏直面困境的勇气和解决问题的能力。其实人生难免有低谷，不必过分苛责自己，试着从小挫折开始，慢慢锻炼自己的心态，学会冷静复盘、主动尝试，你一定会慢慢成为更坚韧的自己</text>
+        </div>
+      </list-item>
+
+      <!-- 底部安全留白 -->
+      <list-item type="spacer" class="spacer-item">
+        <div style="width: 250px; height: 88px;"></div>
+      </list-item>
+    </list>
+
+    <!-- 底部按钮栏（固定） -->
+    <div class="bottom-bar">
+      <div class="btn-retry" onclick="retry">
+        <text class="btn-text">重新测试</text>
+      </div>
+      <div class="btn-home" onclick="goHome">
+        <text class="btn-text">返回首页</text>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+
+export default {
+  data() {
+    return {
+      // 雷达图5维度模拟数据（0~1归一化）
+      // 顺序: fruity, bitter, heavy, strong, sunny
+      series1: [0.62, 0.68, 0.52, 0.45, 0.58],  // 粉色系（当前状态）
+      series2: [0.88, 0.92, 0.76, 0.82, 0.95]   // 黄色系（参考值）
+    }
+  },
+  onInit() {},
+  onReady() {
+    const self = this
+    setTimeout(function () {
+      self.drawRadar()
+    }, 100)
+  },
+  drawRadar() {
+    const canvas = this.$element('radarCanvas')
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+
+    const W = 180
+    const H = 190
+    const cx = W / 2       // 90
+    const cy = H / 2 - 4  // 91
+    const R = 58            // 最大半径
+    const N = 5             // 五边形
+    const LAYERS = 4        // 同心层数
+    const labels = ['fruity', 'bitter', 'heavy', 'strong', 'sunny']
+
+    // ---- 辅助：获取第i个顶点的角度 ----
+    function angle(i) {
+      return -Math.PI / 2 + (2 * Math.PI * i) / N
+    }
+    function ptX(r, i) { return cx + r * Math.cos(angle(i)) }
+    function ptY(r, i) { return cy + r * Math.sin(angle(i)) }
+
+    // ---- 清画布 ----
+    ctx.clearRect(0, 0, W, H)
+
+    // ---- 绘制网格背景（圆形） ----
+    for (let l = 1; l <= LAYERS; l++) {
+      const lr = R * l / LAYERS
+      ctx.beginPath()
+      ctx.arc(cx, cy, lr, 0, 2 * Math.PI)
+      ctx.closePath()
+      ctx.strokeStyle = '#e0e0e0'
+      ctx.lineWidth = 1
+      ctx.stroke()
+    }
+
+    // ---- 绘制轴线 ----
+    ctx.strokeStyle = '#d8d8d8'
+    ctx.lineWidth = 1
+    for (let i = 0; i < N; i++) {
+      ctx.beginPath()
+      ctx.moveTo(cx, cy)
+      ctx.lineTo(ptX(R, i), ptY(R, i))
+      ctx.stroke()
+    }
+
+    // ---- 绘制黄色系（外层参考） ----
+    const s2 = this.series2
+    ctx.beginPath()
+    for (let i = 0; i < N; i++) {
+      const x = ptX(R * s2[i], i)
+      const y = ptY(R * s2[i], i)
+      if (i === 0) ctx.moveTo(x, y)
+      else ctx.lineTo(x, y)
+    }
+    ctx.closePath()
+    ctx.fillStyle = 'rgba(255, 218, 40, 0.22)'
+    ctx.fill()
+    ctx.strokeStyle = '#f5c800'
+    ctx.lineWidth = 1
+    ctx.stroke()
+    // 黄色顶点圆点
+    for (let i = 0; i < N; i++) {
+      ctx.beginPath()
+      ctx.arc(ptX(R * s2[i], i), ptY(R * s2[i], i), 3, 0, 2 * Math.PI)
+      ctx.fillStyle = '#f5c800'
+      ctx.fill()
+    }
+
+    // ---- 绘制粉色系（当前状态） ----
+    const s1 = this.series1
+    ctx.beginPath()
+    for (let i = 0; i < N; i++) {
+      const x = ptX(R * s1[i], i)
+      const y = ptY(R * s1[i], i)
+      if (i === 0) ctx.moveTo(x, y)
+      else ctx.lineTo(x, y)
+    }
+    ctx.closePath()
+    ctx.fillStyle = 'rgba(255, 100, 80, 0.18)'
+    ctx.fill()
+    ctx.strokeStyle = '#f56050'
+    ctx.lineWidth = 1
+    ctx.stroke()
+    // 粉色顶点圆点
+    for (let i = 0; i < N; i++) {
+      ctx.beginPath()
+      ctx.arc(ptX(R * s1[i], i), ptY(R * s1[i], i), 3, 0, 2 * Math.PI)
+      ctx.fillStyle = '#f56050'
+      ctx.fill()
+    }
+
+    // ---- 绘制标签 ----
+    const labelR = R + 16
+    ctx.fillStyle = '#555555'
+    ctx.font = '9px sans-serif'
+    for (let i = 0; i < N; i++) {
+      const lx = cx + labelR * Math.cos(angle(i))
+      const ly = cy + labelR * Math.sin(angle(i))
+      // 根据位置设置对齐
+      if (i === 0) ctx.textAlign = 'center'
+      else if (i === 1) ctx.textAlign = 'left'
+      else if (i === 2) ctx.textAlign = 'left'
+      else if (i === 3) ctx.textAlign = 'right'
+      else ctx.textAlign = 'right'
+
+      ctx.textBaseline = 'middle'
+      ctx.fillText(labels[i], lx, ly)
+    }
+  },
+  goBack() {
+    router.back()
+  },
+  retry() {
+    router.replace({ uri: '/pages/CeshiDatiPage' })
+  },
+  goHome() {
+    router.clear()
+    router.replace({ uri: '/pages/Main' })
+  }
+}
+</script>
+
+<style>
+.root-wrap {
+  flex: 1;
+  flex-direction: column;
+  width: 250px;
+  background-color: #f5f5f5;
+}
+
+/* 列表 */
+.page-list {
+  flex: 1;
+  width: 250px;
+}
+
+/* 顶部背景区 */
+.header-item {
+  width: 250px;
+}
+.header-area {
+  width: 250px;
+  height: 155px;
+  position: relative;
+  flex-direction: column;
+}
+.header-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 155px;
+  object-fit: cover;
+}
+.nav-bar {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 250px;
+  height: 44px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 12px;
+}
+.back-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background-color: rgba(255, 255, 255, 0.3);
+  align-items: center;
+  justify-content: center;
+}
+.back-icon {
+  width: 6px;
+  height: 10px;
+  object-fit: contain;
+}
+.nav-title {
+  font-size: 11px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-left: 6px;
+}
+.character-img {
+  position: absolute;
+  right: 0;
+  bottom: -8px;
+  width: 120px;
+  height: 145px;
+  object-fit: contain;
+}
+.header-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 250px;
+  height: 55px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.92) 100%);
+}
+
+/* 雷达图卡片 */
+.card-item {
+  width: 250px;
+  margin-top: -40px;
+}
+.radar-card-wrap {
+  width: 234px;
+  margin: 0 8px;
+  position: relative;
+  overflow: hidden;
+  border-top-left-radius: 22px;
+  border-top-right-radius: 22px;
+  flex-direction: column;
+  padding-top: 12px;
+}
+.blur-layer {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 254px;
+  height: 64px;
+  background-color: rgba(255, 255, 255, 0.18);
+  filter: blur(10px);
+}
+.frost-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 234px;
+  height: 100%;
+  border-top-left-radius: 22px;
+  border-top-right-radius: 22px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.60) 0%,
+    rgba(255, 255, 255, 1.0) 20%,
+    rgba(255, 255, 255, 1.0) 100%
+  );
+}
+.white-card {
+  width: 234px;
+  border-radius: 14px;
+  background-color: transparent;
+  flex-direction: column;
+  padding: 10px 0 8px 0;
+  position: relative;
+}
+.tag-row {
+  flex-direction: row;
+  padding: 0 14px;
+  margin-bottom: 6px;
+}
+.result-tag {
+  background-color: rgba(255, 100, 30, 0.12);
+  border-radius: 6px;
+  padding: 4px 10px;
+}
+.result-tag-text {
+  font-size: 11px;
+  color: #ff6420;
+  font-weight: bold;
+}
+.canvas-wrap {
+  width: 234px;
+  height: 190px;
+  align-items: center;
+  justify-content: center;
+}
+.radar-canvas {
+  width: 180px;
+  height: 190px;
+}
+
+/* 结果分区 */
+.section-item {
+  width: 250px;
+}
+.result-section {
+  width: 234px;
+  margin: 10px 8px 0 8px;
+  background-color: #ffffff;
+  border-radius: 14px;
+  padding: 16px 0;
+  flex-direction: column;
+}
+.section-title {
+  font-size: 11px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin: 0 16px 6px 16px;
+}
+.section-body {
+  font-size: 9px;
+  color: #333333;
+  line-height: 16px;
+  margin: 0 16px;
+}
+
+/* 底部空白 */
+.spacer-item {
+  width: 250px;
+}
+
+/* 底部按钮栏 */
+.bottom-bar {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 250px;
+  height: 72px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+}
+.btn-retry {
+  width: 96px;
+  height: 36px;
+  border-radius: 18px;
+  background-color: #ff6420;
+  align-items: center;
+  justify-content: center;
+}
+.btn-home {
+  width: 96px;
+  height: 36px;
+  border-radius: 18px;
+  background-color: #28c060;
+  align-items: center;
+  justify-content: center;
+}
+.btn-text {
+  font-size: 12px;
+  color: #ffffff;
+  font-weight: bold;
+}
+</style>
