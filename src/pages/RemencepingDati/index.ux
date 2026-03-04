@@ -9,11 +9,12 @@
         </div>
         <div style="width: 22px;"></div>
       </div>
-      <div class="header-gradient"></div>
     </div>
 
     <!-- 白色内容面板 -->
     <div class="content-panel">
+      <div class="frost-overlay"></div>
+      <div class="panel-content">
       <!-- 第 X 题 badge -->
       <div class="q-badge">
         <text class="q-badge-text">第 {{currentIdx + 1}} 题</text>
@@ -32,6 +33,7 @@
       </div>
       <div class="option-item {{answers[currentIdx] === 3 ? 'opt-sel' : 'opt-nor'}}" onclick="selectOpt(3)">
         <text class="opt-text {{answers[currentIdx] === 3 ? 'opt-text-sel' : ''}}">D.{{currentQ.opts[3]}}</text>
+      </div>
       </div>
     </div>
 
@@ -125,7 +127,7 @@ export default {
 /* 顶部背景区 */
 .header-area {
   width: 250px;
-  height: 150px;
+  height: 110px;
   position: relative;
   flex-direction: column;
 }
@@ -134,16 +136,8 @@ export default {
   top: 0;
   left: 0;
   width: 250px;
-  height: 150px;
+  height: 110px;
   object-fit: cover;
-}
-.header-gradient {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 250px;
-  height: 50px;
-  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 100%);
 }
 .nav-bar {
   position: absolute;
@@ -182,42 +176,68 @@ export default {
   flex: 1;
   flex-direction: column;
   width: 250px;
-  margin-top: -18px;
+  margin-top: -40px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
-  background-color: #ffffff;
+  background-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+.blur-layer {
+  display: none;
+}
+.frost-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  bottom: 0;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.85) 20%,
+    rgba(255, 255, 255, 1) 50%
+  );
+}
+.panel-content {
+  flex: 1;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
   padding: 20px 16px 0 16px;
 }
 /* 第 X 题 badge */
 .q-badge {
   background-color: rgba(255, 100, 30, 0.12);
   border-radius: 6px;
-  padding: 5px 12px;
+  padding: 3px 12px;
   align-self: flex-start;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 }
 .q-badge-text {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
   color: #ff6420;
 }
 /* 题目文字 */
 .q-text {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   color: #1a1a1a;
-  line-height: 22px;
+  line-height: 20px;
   margin-bottom: 22px;
 }
 /* 选项 */
 .option-item {
   width: 218px;
-  min-height: 46px;
+  min-height: 32px;
   border-radius: 10px;
   border-width: 1px;
   border-style: solid;
-  padding: 14px 16px;
-  margin-bottom: 14px;
+  padding: 8px 16px;
+  margin-bottom: 8px;
   justify-content: flex-start;
   align-items: center;
 }
@@ -230,7 +250,7 @@ export default {
   background-color: rgba(40, 192, 96, 0.08);
 }
 .opt-text {
-  font-size: 13px;
+  font-size: 11px;
   color: #333333;
 }
 .opt-text-sel {
@@ -255,7 +275,7 @@ export default {
   justify-content: center;
 }
 .next-btn-text {
-  font-size: 16px;
+  font-size: 14px;
   color: #ffffff;
   font-weight: bold;
 }

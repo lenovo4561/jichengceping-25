@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="page-wrapper">
     <list class="content-list">
       <!-- 顶部背景图 + 导航栏 -->
@@ -18,76 +18,133 @@
       <!-- 磨砂面板起始 + 卡片行 -->
       <list-item type="row0" class="card-row-item panel-start">
         <div class="grid-row">
-          <div class="card" onclick="goDetail">
+          <div class="card" onclick="goDetail(cards[0].title)">
             <div class="card-image-box">
-              <image class="card-img" src="/assets/img/1.png"></image>
-              <div class="count-tag"><text class="count-text">113,256人测过</text></div>
+              <image class="card-img" src="{{cards[0].bg}}"></image>
+              <div class="count-tag"><text class="count-text">{{cards[0].count}}</text></div>
             </div>
-            <text class="card-title">心理压力测试</text>
+            <text class="card-title">{{cards[0].title}}</text>
           </div>
-          <div class="card" onclick="goDetail">
+          <div class="card" onclick="goDetail(cards[1].title)">
             <div class="card-image-box">
-              <image class="card-img" src="/assets/img/1.png"></image>
-              <div class="count-tag"><text class="count-text">113,256人测过</text></div>
+              <image class="card-img" src="{{cards[1].bg}}"></image>
+              <div class="count-tag"><text class="count-text">{{cards[1].count}}</text></div>
             </div>
-            <text class="card-title">抑郁症测试专业版</text>
+            <text class="card-title">{{cards[1].title}}</text>
           </div>
         </div>
       </list-item>
 
       <list-item type="row1" class="card-row-item">
         <div class="grid-row">
-          <div class="card" onclick="goDetail">
+          <div class="card" onclick="goDetail(cards[2].title)">
             <div class="card-image-box">
-              <image class="card-img" src="/assets/img/1.png"></image>
-              <div class="count-tag"><text class="count-text">113,256人测过</text></div>
+              <image class="card-img" src="{{cards[2].bg}}"></image>
+              <div class="count-tag"><text class="count-text">{{cards[2].count}}</text></div>
             </div>
-            <text class="card-title">360度职场综合能力评估</text>
+            <text class="card-title">{{cards[2].title}}</text>
           </div>
-          <div class="card" onclick="goDetail">
+          <div class="card" onclick="goDetail(cards[3].title)">
             <div class="card-image-box">
-              <image class="card-img" src="/assets/img/1.png"></image>
-              <div class="count-tag"><text class="count-text">113,256人测过</text></div>
+              <image class="card-img" src="{{cards[3].bg}}"></image>
+              <div class="count-tag"><text class="count-text">{{cards[3].count}}</text></div>
             </div>
-            <text class="card-title">焦虑倾向测试</text>
+            <text class="card-title">{{cards[3].title}}</text>
           </div>
         </div>
       </list-item>
 
       <list-item type="row2" class="card-row-item">
         <div class="grid-row">
-          <div class="card" onclick="goDetail">
+          <div class="card" onclick="goDetail(cards[4].title)">
             <div class="card-image-box">
-              <image class="card-img" src="/assets/img/1.png"></image>
-              <div class="count-tag"><text class="count-text">113,256人测过</text></div>
+              <image class="card-img" src="{{cards[4].bg}}"></image>
+              <div class="count-tag"><text class="count-text">{{cards[4].count}}</text></div>
             </div>
-            <text class="card-title">心理压力测试</text>
+            <text class="card-title">{{cards[4].title}}</text>
           </div>
-          <div class="card" onclick="goDetail">
+          <div class="card" onclick="goDetail(cards[5].title)">
             <div class="card-image-box">
-              <image class="card-img" src="/assets/img/1.png"></image>
-              <div class="count-tag"><text class="count-text">113,256人测过</text></div>
+              <image class="card-img" src="{{cards[5].bg}}"></image>
+              <div class="count-tag"><text class="count-text">{{cards[5].count}}</text></div>
             </div>
-            <text class="card-title">抑郁症测试专业版</text>
+            <text class="card-title">{{cards[5].title}}</text>
           </div>
         </div>
       </list-item>
 
       <list-item type="row3" class="card-row-item">
         <div class="grid-row">
-          <div class="card" onclick="goDetail">
+          <div class="card" onclick="goDetail(cards[6].title)">
             <div class="card-image-box">
-              <image class="card-img" src="/assets/img/1.png"></image>
-              <div class="count-tag"><text class="count-text">113,256人测过</text></div>
+              <image class="card-img" src="{{cards[6].bg}}"></image>
+              <div class="count-tag"><text class="count-text">{{cards[6].count}}</text></div>
             </div>
-            <text class="card-title">360度职场综合能力评估</text>
+            <text class="card-title">{{cards[6].title}}</text>
           </div>
-          <div class="card" onclick="goDetail">
+          <div class="card" onclick="goDetail(cards[7].title)">
             <div class="card-image-box">
-              <image class="card-img" src="/assets/img/1.png"></image>
-              <div class="count-tag"><text class="count-text">113,256人测过</text></div>
+              <image class="card-img" src="{{cards[7].bg}}"></image>
+              <div class="count-tag"><text class="count-text">{{cards[7].count}}</text></div>
             </div>
-            <text class="card-title">焦虑倾向测试</text>
+            <text class="card-title">{{cards[7].title}}</text>
+          </div>
+        </div>
+      </list-item>
+
+      <list-item type="row4" class="card-row-item">
+        <div class="grid-row">
+          <div class="card" onclick="goDetail(cards[8].title)">
+            <div class="card-image-box">
+              <image class="card-img" src="{{cards[8].bg}}"></image>
+              <div class="count-tag"><text class="count-text">{{cards[8].count}}</text></div>
+            </div>
+            <text class="card-title">{{cards[8].title}}</text>
+          </div>
+          <div class="card" onclick="goDetail(cards[9].title)">
+            <div class="card-image-box">
+              <image class="card-img" src="{{cards[9].bg}}"></image>
+              <div class="count-tag"><text class="count-text">{{cards[9].count}}</text></div>
+            </div>
+            <text class="card-title">{{cards[9].title}}</text>
+          </div>
+        </div>
+      </list-item>
+
+      <list-item type="row5" class="card-row-item">
+        <div class="grid-row">
+          <div class="card" onclick="goDetail(cards[10].title)">
+            <div class="card-image-box">
+              <image class="card-img" src="{{cards[10].bg}}"></image>
+              <div class="count-tag"><text class="count-text">{{cards[10].count}}</text></div>
+            </div>
+            <text class="card-title">{{cards[10].title}}</text>
+          </div>
+          <div class="card" onclick="goDetail(cards[11].title)">
+            <div class="card-image-box">
+              <image class="card-img" src="{{cards[11].bg}}"></image>
+              <div class="count-tag"><text class="count-text">{{cards[11].count}}</text></div>
+            </div>
+            <text class="card-title">{{cards[11].title}}</text>
+          </div>
+        </div>
+      </list-item>
+
+      <list-item type="row6" class="card-row-item">
+        <div class="grid-row">
+          <div class="card" onclick="goDetail(cards[12].title)">
+            <div class="card-image-box">
+              <image class="card-img" src="{{cards[12].bg}}"></image>
+              <div class="count-tag"><text class="count-text">{{cards[12].count}}</text></div>
+            </div>
+            <text class="card-title">{{cards[12].title}}</text>
+          </div>
+          <div class="card" onclick="goDetail(cards[13].title)">
+            <div class="card-image-box">
+              <image class="card-img" src="{{cards[13].bg}}"></image>
+              <div class="count-tag"><text class="count-text">{{cards[13].count}}</text></div>
+            </div>
+            <text class="card-title">{{cards[13].title}}</text>
           </div>
         </div>
       </list-item>
@@ -105,19 +162,64 @@ export default {
   props: ['catTitle'],
   data() {
     return {
-      catTitle: '职场自测'
+      catTitle: '职场自测',
+      cards: []
     }
   },
   onInit() {
     if (this.$page && this.$page.query && this.$page.query.catTitle) {
       this.catTitle = this.$page.query.catTitle
     }
+    const dirMap = {
+      '职场人必测': 'zc',
+      '情感状态自测': 'qg',
+      '趣味灵魂测试': 'qw'
+    }
+    const titlesMap = {
+      '职场人必测': [
+        '职场沟通力测评', '职场执行力测评',
+        '职场责任心测评', '职场抗压能力测评',
+        '职场协作能力测评', '职场学习能力测评',
+        '职场应变能力测评', '职场自律能力测评',
+        '职场创新能力测评', '职场职业素养测评',
+        '职场决策能力测评', '职场时间管理能力测评',
+        '职场情绪管理能力测评', '职场领导力测评'
+      ],
+      '情感状态自测': [
+        '情感自愈能力测评', '情感表达能力测评',
+        '情感敏感程度测评', '情感稳定性测评',
+        '情感共情能力测评', '情感安全感测评',
+        '情感包容度测评', '情感付出意愿测评',
+        '情感抗伤害能力测评', '情感幸福感感知测评',
+        '测你的爱情情感观', '测你的友情情感特质',
+        '测你的亲情情感表达', '测你的情感依赖程度'
+      ],
+      '趣味灵魂测试': [
+        '趣味生活偏好测评', '趣味社交风格测评',
+        '趣味·性格色彩测评', '趣味·人生剧本测评',
+        '趣味·动物人格测评', '趣味·美食性格测评',
+        '趣味·旅行人格测评', '趣味·梦境解析测评',
+        '趣味·星座职场适配度测评', '趣味·奶茶人格测评',
+        '趣味·电影偏好人格测评', '趣味·穿搭风格人格测评',
+        '趣味·解压方式人格测评', '趣味·社交距离人格测评'
+      ]
+    }
+    const dir = dirMap[this.catTitle] || 'zc'
+    const titles = titlesMap[this.catTitle] || titlesMap['职场人必测']
+    this.cards = titles.map((title, i) => ({
+      title,
+      count: '113,256人测过',
+      bg: '/assets/img/' + dir + '/' + (i + 1) + '.jpg'
+    }))
   },
   goBack() {
     router.back()
   },
-  goDetail() {
-    router.push({ uri: '/pages/RemencepingDati' })
+  goDetail(title) {
+    router.push({
+      uri: '/pages/CeshiJinruye',
+      params: { testTitle: title }
+    })
   }
 }
 </script>
@@ -195,35 +297,35 @@ export default {
 
 /* 磨砂面板起始：上移叠在背景图上，左上右上圆角 */
 .panel-start {
-  margin-top: -14px;
+  margin-top: -45px;
   border-top-left-radius: 14px;
   border-top-right-radius: 14px;
 }
 .card-row-item {
   flex-direction: column;
-  padding: 0 10px;
+  padding: 0 4px;
   margin-bottom: 4px;
   background-color: rgba(248, 248, 250, 0.95);
 }
 .grid-row {
   flex-direction: row;
   justify-content: space-between;
-  width: 230px;
+  width: 242px;
   padding-top: 12px;
 }
 .card {
-  width: 110px;
+  width: 116px;
   flex-direction: column;
 }
 .card-image-box {
-  width: 110px;
-  height: 140px;
+  width: 116px;
+  height: 100px;
   border-radius: 8px;
   position: relative;
 }
 .card-img {
-  width: 110px;
-  height: 140px;
+  width: 116px;
+  height: 100px;
   border-radius: 8px;
   object-fit: cover;
 }

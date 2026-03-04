@@ -18,13 +18,13 @@
             </div>
             <div class="header-right" onclick="viewMore(cat0.title)">
               <text class="view-more-text">查看更多</text>
-              <image class="arrow-icon" src="/assets/img/jiantou.png"></image>
+              <image class="arrow-icon" src="/assets/img/more.png"></image>
             </div>
           </div>
         </list-item>
         <list-item type="cat0-row" class="row-item">
           <div class="grid-row">
-            <div class="card" onclick="goDetail">
+            <div class="card" onclick="goDetail(cat0.items[0].title)">
               <div class="card-image-box">
                 <image class="card-img" src="{{cat0.items[0].bg}}"></image>
                 <image class="hot-badge" src="/assets/img/HOT.png"></image>
@@ -32,7 +32,7 @@
               </div>
               <text class="card-title">{{cat0.items[0].title}}</text>
             </div>
-            <div class="card" onclick="goDetail">
+            <div class="card" onclick="goDetail(cat0.items[1].title)">
               <div class="card-image-box">
                 <image class="card-img" src="{{cat0.items[1].bg}}"></image>
                 <image class="hot-badge" src="/assets/img/HOT.png"></image>
@@ -50,15 +50,15 @@
               <div class="orange-bar"></div>
               <text class="category-title">{{cat1.title}}</text>
             </div>
-            <div class="header-right" onclick="viewMore">
+            <div class="header-right" onclick="viewMore(cat1.title)">
               <text class="view-more-text">查看更多</text>
-              <image class="arrow-icon" src="/assets/img/jiantou.png"></image>
+              <image class="arrow-icon" src="/assets/img/more.png"></image>
             </div>
           </div>
         </list-item>
         <list-item type="cat1-row" class="row-item">
           <div class="grid-row">
-            <div class="card" onclick="goDetail">
+            <div class="card" onclick="goDetail(cat1.items[0].title)">
               <div class="card-image-box">
                 <image class="card-img" src="{{cat1.items[0].bg}}"></image>
                 <image class="hot-badge" src="/assets/img/HOT.png"></image>
@@ -66,7 +66,7 @@
               </div>
               <text class="card-title">{{cat1.items[0].title}}</text>
             </div>
-            <div class="card" onclick="goDetail">
+            <div class="card" onclick="goDetail(cat1.items[1].title)">
               <div class="card-image-box">
                 <image class="card-img" src="{{cat1.items[1].bg}}"></image>
                 <image class="hot-badge" src="/assets/img/HOT.png"></image>
@@ -84,15 +84,15 @@
               <div class="orange-bar"></div>
               <text class="category-title">{{cat2.title}}</text>
             </div>
-            <div class="header-right" onclick="viewMore">
+            <div class="header-right" onclick="viewMore(cat2.title)">
               <text class="view-more-text">查看更多</text>
-              <image class="arrow-icon" src="/assets/img/jiantou.png"></image>
+              <image class="arrow-icon" src="/assets/img/more.png"></image>
             </div>
           </div>
         </list-item>
         <list-item type="cat2-row" class="row-item">
           <div class="grid-row">
-            <div class="card" onclick="goDetail">
+            <div class="card" onclick="goDetail(cat2.items[0].title)">
               <div class="card-image-box">
                 <image class="card-img" src="{{cat2.items[0].bg}}"></image>
                 <image class="hot-badge" src="/assets/img/HOT.png"></image>
@@ -100,7 +100,7 @@
               </div>
               <text class="card-title">{{cat2.items[0].title}}</text>
             </div>
-            <div class="card" onclick="goDetail">
+            <div class="card" onclick="goDetail(cat2.items[1].title)">
               <div class="card-image-box">
                 <image class="card-img" src="{{cat2.items[1].bg}}"></image>
                 <image class="hot-badge" src="/assets/img/HOT.png"></image>
@@ -118,7 +118,6 @@
 </template>
 
 <script>
-import prompt from '@system.prompt'
 import router from '@system.router'
 
 export default {
@@ -127,22 +126,22 @@ export default {
       cat0: {
         title: '职场人必测',
         items: [
-          { title: '心理压力测试', count: '113,256人测过', bg: '/assets/img/1.png' },
-          { title: '抑郁症测试专业版', count: '113,256人测过', bg: '/assets/img/1.png' }
+          { title: '职场沟通力测评', count: '113,256人测过', bg: '/assets/img/zc/1.jpg' },
+          { title: '职场执行力测评', count: '113,256人测过', bg: '/assets/img/zc/2.jpg' }
         ]
       },
       cat1: {
         title: '情感状态自测',
         items: [
-          { title: '心理压力测试', count: '113,256人测过', bg: '/assets/img/1.png' },
-          { title: '抑郁症测试专业版', count: '113,256人测过', bg: '/assets/img/1.png' }
+          { title: '情感自愈能力测评', count: '113,256人测过', bg: '/assets/img/qg/1.jpg' },
+          { title: '情感表达能力测评', count: '113,256人测过', bg: '/assets/img/qg/2.jpg' }
         ]
       },
       cat2: {
         title: '趣味灵魂测试',
         items: [
-          { title: '心理压力测试', count: '113,256人测过', bg: '/assets/img/1.png' },
-          { title: '抑郁症测试专业版', count: '113,256人测过', bg: '/assets/img/1.png' }
+          { title: '趣味生活偏好测评', count: '113,256人测过', bg: '/assets/img/qw/1.jpg' },
+          { title: '趣味社交风格测评', count: '113,256人测过', bg: '/assets/img/qw/2.jpg' }
         ]
       }
     }
@@ -154,8 +153,11 @@ export default {
       params: { catTitle: title || '职场人必测' }
     })
   },
-  goDetail() {
-    prompt.showToast({ message: '进入测试' })
+  goDetail(title) {
+    router.push({
+      uri: '/pages/CeshiJinruye',
+      params: { testTitle: title }
+    })
   }
 }
 </script>
@@ -184,7 +186,7 @@ export default {
   left: 0;
   width: 250px;
   height: 100px;
-  background: linear-gradient(to bottom, rgba(248,248,250,0) 0%, rgba(248,248,250,0.92) 100%);
+  background: linear-gradient(to bottom, rgba(248,248,250,0) 0%, rgba(248,248,250,0.3) 60%, rgba(248,248,250,0.5) 100%);
 }
 .top-bg {
   width: 250px;
@@ -192,16 +194,16 @@ export default {
   object-fit: cover;
 }
 /* 磨砂起始：上移叠在背景图上，左上右上圆角 */
-.panel-start {
-  margin-top: -14px;
-  border-top-left-radius: 14px;
-  border-top-right-radius: 14px;
-  background-color: rgba(248, 248, 250, 0.92);
-}
 .cat-header-item {
   flex-direction: column;
   padding: 0 10px;
   background-color: rgba(248, 248, 250, 0.92);
+}
+.panel-start {
+  margin-top: -14px;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  background-color: rgba(248, 248, 250, 0.4);
 }
 .category-header {
   flex-direction: row;
@@ -216,13 +218,13 @@ export default {
 }
 .orange-bar {
   width: 3px;
-  height: 12px;
+  height: 11px;
   background-color: #ff5500;
   border-radius: 2px;
   margin-right: 6px;
 }
 .category-title {
-  font-size: 13px;
+  font-size: 11px;
   font-weight: bold;
   color: #1a1a1a;
 }
@@ -271,8 +273,8 @@ export default {
   position: absolute;
   top: 4px;
   right: 4px;
-  width: 24px;
-  height: 12px;
+  width: 27px;
+  height: 15px;
   object-fit: contain;
 }
 .count-tag {

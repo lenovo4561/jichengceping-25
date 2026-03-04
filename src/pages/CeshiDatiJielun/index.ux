@@ -35,6 +35,14 @@
         </div>
       </list-item>
 
+      <!-- 心理状态结果块 -->
+      <list-item type="section-0" class="section-item">
+        <div class="result-section">
+          <text class="section-title">💯心理状态</text>
+          <text class="section-body">你的心理状态整体处于平稳水平，能够合理调节情绪和压力，具备一定的心理韧性。建议保持规律作息、适度运动，继续关注自身心理健康状态。</text>
+        </div>
+      </list-item>
+
       <!-- 抑郁结果块 -->
       <list-item type="section-1" class="section-item">
         <div class="result-section">
@@ -75,13 +83,22 @@ import router from '@system.router'
 export default {
   data() {
     return {
+      testName: '',
+      catTitle: '',
       // 雷达图5维度模拟数据（0~1归一化）
       // 顺序: fruity, bitter, heavy, strong, sunny
       series1: [0.62, 0.68, 0.52, 0.45, 0.58],  // 粉色系（当前状态）
-      series2: [0.88, 0.92, 0.76, 0.82, 0.95]   // 黄色系（参考值）
+      series2: [0.88, 0.92, 0.76, 0.82, 0.95],   // 黄色系（参考値）
+      series3: [0.50, 0.55, 0.60, 0.48, 0.65]    // 蓝色系（心理状态）
     }
   },
-  onInit() {},
+  onInit() {
+    if (this.$page && this.$page.query) {
+      const q = this.$page.query
+      if (q.testName) this.testName = q.testName
+      if (q.catTitle) this.catTitle = q.catTitle
+    }
+  },
   onReady() {
     const self = this
     setTimeout(function () {
@@ -179,7 +196,28 @@ export default {
       ctx.fill()
     }
 
-    // ---- 绘制标签 ----
+    // ---- 绘制蓝色系（心理状态） ----
+    const s3 = this.series3
+    ctx.beginPath()
+    for (let i = 0; i < N; i++) {
+      const x = ptX(R * s3[i], i)
+      const y = ptY(R * s3[i], i)
+      if (i === 0) ctx.moveTo(x, y)
+      else ctx.lineTo(x, y)
+    }
+    ctx.closePath()
+    ctx.fillStyle = 'rgba(40, 160, 240, 0.18)'
+    ctx.fill()
+    ctx.strokeStyle = '#28a0f0'
+    ctx.lineWidth = 1
+    ctx.stroke()
+    // 蓝色顶点圆点
+    for (let i = 0; i < N; i++) {
+      ctx.beginPath()
+      ctx.arc(ptX(R * s3[i], i), ptY(R * s3[i], i), 3, 0, 2 * Math.PI)
+      ctx.fillStyle = '#28a0f0'
+      ctx.fill()
+    }
     const labelR = R + 16
     ctx.fillStyle = '#555555'
     ctx.font = '9px sans-serif'
@@ -201,7 +239,10 @@ export default {
     router.back()
   },
   retry() {
-    router.replace({ uri: '/pages/CeshiDatiPage' })
+    router.replace({
+      uri: '/pages/CeshiDatiPage',
+      params: { testName: this.testName, catTitle: this.catTitle }
+    })
   },
   goHome() {
     router.clear()

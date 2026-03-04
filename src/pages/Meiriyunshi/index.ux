@@ -115,7 +115,7 @@ export default {
   object-fit: cover;
 }
 .header-title {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: bold;
   color: #ff5500;
 }
@@ -123,7 +123,7 @@ export default {
   position: absolute;
   top: 68px;
   left: 14px;
-  font-size: 12px;
+  font-size: 10px;
   color: #ff7730;
   letter-spacing: 1px;
 }
@@ -162,7 +162,7 @@ export default {
   margin-right: 8px;
 }
 .date-text {
-  font-size: 15px;
+  font-size: 12px;
   font-weight: bold;
   color: #1a1a1a;
 }
@@ -181,15 +181,15 @@ export default {
   border-bottom-style: solid;
 }
 .sec-title {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: bold;
   color: #1a1a1a;
   margin-bottom: 10px;
 }
 .sec-body {
-  font-size: 13px;
+  font-size: 11px;
   color: #333333;
-  line-height: 24px;
+  line-height: 20px;
 }
 
 /* ---- 底部 ---- */

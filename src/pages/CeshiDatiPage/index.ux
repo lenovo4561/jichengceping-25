@@ -3,13 +3,17 @@
     <!-- 顶部背景区 -->
     <list-item type="header" class="header-item">
       <div class="header-area">
-        <image class="header-bg" src="/assets/img/remencepingdati-bg.png"></image>
+        <image class="header-bg" src="/assets/img/ceshixiangqing-bg.png"></image>
         <!-- 导航栏 -->
         <div class="nav-bar">
           <div class="back-btn" onclick="goBack">
             <image class="back-icon" src="/assets/img/back.png"></image>
           </div>
         </div>
+        <!-- 标题文字区 -->
+        <text class="title-xingzuo">星座</text>
+        <text class="title-xingzuo-name">星座性格测试</text>
+        <text class="title-xingzuo-sub">【测一测你的星座性格】</text>
         <!-- 底部渐变 -->
         <div class="header-gradient"></div>
       </div>
@@ -56,40 +60,22 @@
 
 <script>
 import router from '@system.router'
+const zhichangHelper = require('../../helper/JS/zhichang')
+const quweiHelper = require('../../helper/JS/quwei')
+const qingganHelper = require('../../helper/JS/qinggan')
 
 export default {
   data() {
     return {
-      catTitle: '心理状态',
-      testName: '心理状态测试',
-      answers: [-1, -1, -1, -1, -1],
-      questions: [
-        {
-          question: '我觉得闷闷不乐，情绪低沉',
-          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
-        },
-        {
-          question: '我觉得一天之中早晨最好',
-          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
-        },
-        {
-          question: '我觉得自己生活的非常的苦',
-          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
-        },
-        {
-          question: '我感到精力充沛，干劲十足',
-          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
-        },
-        {
-          question: '我容易感到心烦意乱，难以平静',
-          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
-        }
-      ]
+      catTitle: '测评',
+      testName: '',
+      answers: [],
+      questions: []
     }
   },
   computed: {
     allAnswered() {
-      return this.answers.every(function (a) { return a !== -1 })
+      return this.questions.length > 0 && this.answers.every(function (a) { return a !== -1 })
     }
   },
   onInit() {
@@ -97,6 +83,57 @@ export default {
       const q = this.$page.query
       if (q.catTitle) this.catTitle = q.catTitle
       if (q.testName) this.testName = q.testName
+    }
+    this.loadQuestions()
+  },
+  loadQuestions() {
+    const testName = this.testName
+    if (!testName) return
+    let questions = []
+
+    if (testName.indexOf('职场') === 0) {
+      // 职场类：zhichang.js，遍历 1-20 查找匹配标题
+      for (let i = 1; i <= 20; i++) {
+        const res = zhichangHelper.workplaceTest(i)
+        if (res && res.testTitle === testName) {
+          questions = res.questions.map(function(q) {
+            return { question: q.title, opts: q.options }
+          })
+          break
+        }
+      }
+    } else if (testName.indexOf('情感') === 0 || testName.indexOf('测你的') === 0) {
+      // 情感类：qinggan.js，遍历数组查找匹配标题（含"情感..."和"测你的..."两类）
+      const arr = qingganHelper.emotionTestQuestions
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].title === testName && arr[i].questions) {
+          questions = arr[i].questions.map(function(q) {
+            return {
+              question: q.question,
+              opts: [q.options.A, q.options.B, q.options.C, q.options.D]
+            }
+          })
+          break
+        }
+      }
+    } else if (testName.indexOf('趣味') === 0) {
+      // 趣味类：quwei.js，遍历 1-14 查找匹配标题
+      for (let i = 1; i <= 14; i++) {
+        const res = quweiHelper.funTest(i)
+        if (res && res.testTitle === testName) {
+          questions = res.questions.map(function(q) {
+            return { question: q.title, opts: q.options }
+          })
+          break
+        }
+      }
+    }
+
+    if (questions.length > 0) {
+      this.questions = questions
+      const initAnswers = []
+      for (let i = 0; i < questions.length; i++) initAnswers.push(-1)
+      this.answers = initAnswers
     }
   },
   goBack() {
@@ -111,7 +148,11 @@ export default {
     if (!this.allAnswered) return
     router.replace({
       uri: '/pages/CeshiDatiJielun',
-      params: { answers: this.answers.join(',') }
+      params: {
+        answers: this.answers.join(','),
+        testName: this.testName,
+        catTitle: this.catTitle
+      }
     })
   }
 }
@@ -121,7 +162,7 @@ export default {
 .page-list {
   flex: 1;
   width: 250px;
-  background-color: #f0faf4;
+  background-color: rgba(248, 248, 250, 0.75);
 }
 .header-item {
   width: 250px;
@@ -145,12 +186,12 @@ export default {
   bottom: 0;
   left: 0;
   width: 250px;
-  height: 60px;
-  background: linear-gradient(to bottom, rgba(240,250,244,0) 0%, rgba(255,255,255,0.95) 100%);
+  height: 100px;
+  background: linear-gradient(to bottom, rgba(248,248,250,0) 0%, rgba(248,248,250,0.6) 60%, rgba(248,248,250,0.92) 100%);
 }
 .nav-bar {
   position: absolute;
-  top: 0;
+  top: 20px;
   left: 0;
   width: 250px;
   height: 44px;
@@ -177,22 +218,37 @@ export default {
   font-weight: bold;
   color: #ffffff;
 }
-.title-block {
+.title-xingzuo {
   position: absolute;
-  bottom: 22px;
-  left: 14px;
-  flex-direction: column;
+  top: 30px;
+  left: 42px;
+  color: #007D2E;
+  font-family: NanoByongGyeHei;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 24px;
+  letter-spacing: 5px;
 }
-.title-main {
+.title-xingzuo-name {
+  position: absolute;
+  top: 58px;
+  left: 14px;
+  color: #007D2E;
+  font-family: NanoByongGyeHei;
   font-size: 16px;
   font-weight: bold;
-  color: #1a4d28;
-  line-height: 24px;
+  line-height: 20px;
+  letter-spacing: 3px;
 }
-.title-sub {
-  font-size: 9px;
-  color: #3a7a52;
-  margin-top: 2px;
+.title-xingzuo-sub {
+  position: absolute;
+  top: 82px;
+  left: 9px;
+  color: #007D2E;
+  font-family: "PingFang SC";
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 16px;
   letter-spacing: 1px;
 }
 .character-img {
@@ -205,18 +261,18 @@ export default {
 }
 .panel-top-item {
   width: 250px;
+  margin-top: -26px;
 }
 .panel-top {
   width: 250px;
-  height: 24px;
-  margin-top: -14px;
+  height: 20px;
   border-top-left-radius: 14px;
   border-top-right-radius: 14px;
-  background-color: #ffffff;
+  background-color: rgba(248, 248, 250, 0.65);
 }
 .q-item {
   width: 250px;
-  background-color: #ffffff;
+  background-color: rgba(248, 248, 250, 0.65);
 }
 .question-block {
   width: 250px;
@@ -224,7 +280,7 @@ export default {
   padding: 0 14px 20px 14px;
 }
 .q-title {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
   color: #1a1a1a;
   line-height: 20px;
@@ -242,7 +298,7 @@ export default {
   border-width: 1px;
   border-style: solid;
   padding: 10px 8px;
-  justify-content: center;
+  justify-content: flex-start;
   margin-right: 7px;
 }
 .opt-normal {
@@ -263,7 +319,7 @@ export default {
 }
 .footer-item {
   width: 250px;
-  background-color: #ffffff;
+  background-color: rgba(248, 248, 250, 0.75);
 }
 .bottom-bar {
   width: 250px;
@@ -271,7 +327,7 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff;
+  background-color: rgba(248, 248, 250, 0.75);
 }
 .result-btn {
   width: 218px;
@@ -287,7 +343,7 @@ export default {
   background-color: #c8e6d4;
 }
 .result-btn-text {
-  font-size: 15px;
+  font-size: 12px;
   color: #ffffff;
   font-weight: bold;
 }
