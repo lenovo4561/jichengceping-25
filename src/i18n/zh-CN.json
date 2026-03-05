@@ -1,0 +1,53 @@
+{
+  "app": {
+    "name": "吉成测评"
+  },
+  "common": {
+    "confirm": "确定",
+    "cancel": "取消",
+    "back": "返回",
+    "loading": "加载中...",
+    "submit": "提交",
+    "save": "保存"
+  },
+  "privacy": {
+    "title": "用户协议及隐私政策",
+    "agree": "同意并继续",
+    "disagree": "不同意",
+    "userAgreement": "用户协议",
+    "privacyPolicy": "隐私政策"
+  },
+  "tabs": {
+    "quweiceping": "趣味测评",
+    "xinlijiankang": "心理健康",
+    "meiriyunshi": "每日运势",
+    "mine": "我的"
+  },
+  "ceping": {
+    "zhichang": "职场",
+    "qinggan": "情感",
+    "quwei": "趣味",
+    "startTest": "开始测评",
+    "goTest": "去测试",
+    "testing": "人在测试",
+    "viewResult": "查看结论",
+    "retry": "再测一次",
+    "goHome": "返回首页",
+    "viewMore": "查看更多",
+    "finished": "题目已全部答完，点击下方查看结论吧"
+  },
+  "quweiceping": {
+    "cat0Title": "职场人必测",
+    "cat1Title": "情感状态自测",
+    "cat2Title": "趣味灵魂测试"
+  },
+  "xinlijiankang": {
+    "title": "心理健康"
+  },
+  "meiriyunshi": {
+    "title": "每日运势"
+  },
+  "mine": {
+    "otherServices": "其他服务"
+  }
+}

@@ -17,22 +17,22 @@
       <div class="panel-content">
       <!-- 第 X 题 badge -->
       <div class="q-badge">
-        <text class="q-badge-text">第 {{currentIdx + 1}} 题</text>
+        <text class="q-badge-text">第 {{qNum}} 题</text>
       </div>
       <!-- 题目文字 -->
-      <text class="q-text">{{currentQ.question}}</text>
+      <text class="q-text">{{qText}}</text>
       <!-- 四个选项，纵向排列 -->
-      <div class="option-item {{answers[currentIdx] === 0 ? 'opt-sel' : 'opt-nor'}}" onclick="selectOpt(0)">
-        <text class="opt-text {{answers[currentIdx] === 0 ? 'opt-text-sel' : ''}}">A.{{currentQ.opts[0]}}</text>
+      <div class="{{cls0}}" onclick="selectOpt(0)">
+        <text class="{{txt0}}">A.{{opt0}}</text>
       </div>
-      <div class="option-item {{answers[currentIdx] === 1 ? 'opt-sel' : 'opt-nor'}}" onclick="selectOpt(1)">
-        <text class="opt-text {{answers[currentIdx] === 1 ? 'opt-text-sel' : ''}}">B.{{currentQ.opts[1]}}</text>
+      <div class="{{cls1}}" onclick="selectOpt(1)">
+        <text class="{{txt1}}">B.{{opt1}}</text>
       </div>
-      <div class="option-item {{answers[currentIdx] === 2 ? 'opt-sel' : 'opt-nor'}}" onclick="selectOpt(2)">
-        <text class="opt-text {{answers[currentIdx] === 2 ? 'opt-text-sel' : ''}}">C.{{currentQ.opts[2]}}</text>
+      <div class="{{cls2}}" onclick="selectOpt(2)">
+        <text class="{{txt2}}">C.{{opt2}}</text>
       </div>
-      <div class="option-item {{answers[currentIdx] === 3 ? 'opt-sel' : 'opt-nor'}}" onclick="selectOpt(3)">
-        <text class="opt-text {{answers[currentIdx] === 3 ? 'opt-text-sel' : ''}}">D.{{currentQ.opts[3]}}</text>
+      <div class="{{cls3}}" onclick="selectOpt(3)">
+        <text class="{{txt3}}">D.{{opt3}}</text>
       </div>
       </div>
     </div>
@@ -40,7 +40,7 @@
     <!-- 底部按钮 -->
     <div class="bottom-bar">
       <div class="next-btn" onclick="nextOrResult">
-        <text class="next-btn-text">{{isLast ? '查看结论' : '下一题'}}</text>
+        <text class="next-btn-text">{{nextBtnText}}</text>
       </div>
     </div>
   </div>
@@ -48,44 +48,59 @@
 
 <script>
 import router from '@system.router'
+import { workplaceTest } from '../../helper/JS/zhichang'
+import { emotionAssessmentHandler } from '../../helper/JS/qinggan'
+import { funTest } from '../../helper/JS/quwei'
+
+// 静态标题映射：按 GengduoCeping 中三类标题顺序，index+1 即为数据源 ID
+const _ZHICHANG_TITLES = [
+  '职场沟通力测评', '职场执行力测评', '职场责任心测评', '职场抗压能力测评',
+  '职场协作能力测评', '职场学习能力测评', '职场应变能力测评', '职场自律能力测评',
+  '职场创新能力测评', '职场职业素养测评', '职场决策能力测评', '职场时间管理能力测评',
+  '职场情绪管理能力测评', '职场领导力测评'
+]
+const _QINGGAN_TITLES = [
+  '情感自愈能力测评', '情感表达能力测评', '情感敏感程度测评', '情感稳定性测评',
+  '情感共情能力测评', '情感安全感测评', '情感包容度测评', '情感付出意愿测评',
+  '情感抗伤害能力测评', '情感幸福感感知测评', '测你的爱情情感观', '测你的友情情感特质',
+  '测你的亲情情感表达', '测你的情感依赖程度'
+]
+const _QUWEI_TITLES = [
+  '趣味生活偏好测评', '趣味社交风格测评', '趣味·性格色彩测评', '趣味·人生剧本测评',
+  '趣味·动物人格测评', '趣味·美食性格测评', '趣味·旅行人格测评', '趣味·梦境解析测评',
+  '趣味·星座职场适配度测评', '趣味·奶茶人格测评', '趣味·电影偏好人格测评', '趣味·穿搭风格人格测评',
+  '趣味·解压方式人格测评', '趣味·社交距离人格测评'
+]
+
+function findTestInfo(title) {
+  let idx = _ZHICHANG_TITLES.indexOf(title)
+  if (idx >= 0) return { source: 'zhichang', id: idx + 1 }
+  idx = _QINGGAN_TITLES.indexOf(title)
+  if (idx >= 0) return { source: 'qinggan', id: idx + 1 }
+  idx = _QUWEI_TITLES.indexOf(title)
+  if (idx >= 0) return { source: 'quwei', id: idx + 1 }
+  return null
+}
 
 export default {
   data() {
     return {
-      catTitle: '心理状态',
-      testName: '心理状态测试',
+      catTitle: '',
+      testName: '',
+      testSource: '',
+      testId: 0,
       currentIdx: 0,
       answers: [-1, -1, -1, -1, -1],
-      questions: [
-        {
-          question: '在《西游记》中，会七十二变的人是谁？',
-          opts: ['孙悟空', '唐僧', '猪八戒', '沙悟净']
-        },
-        {
-          question: '我觉得闷闷不乐，情绪低沉',
-          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
-        },
-        {
-          question: '我觉得一天之中早晨最好',
-          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
-        },
-        {
-          question: '我感到精力充沛，干劲十足',
-          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
-        },
-        {
-          question: '我容易感到心烦意乱，难以平静',
-          opts: ['无/偶尔有', '有时有', '经常有', '总是如此']
-        }
-      ]
-    }
-  },
-  computed: {
-    currentQ() {
-      return this.questions[this.currentIdx]
-    },
-    isLast() {
-      return this.currentIdx === this.questions.length - 1
+      questions: [],
+      // 模板绑定的展示字段（避免Quick App不支持computed中的复杂表达式）
+      qNum: 1,
+      qText: '',
+      opt0: '', opt1: '', opt2: '', opt3: '',
+      cls0: 'option-item opt-nor', cls1: 'option-item opt-nor',
+      cls2: 'option-item opt-nor', cls3: 'option-item opt-nor',
+      txt0: 'opt-text', txt1: 'opt-text',
+      txt2: 'opt-text', txt3: 'opt-text',
+      nextBtnText: '下一题'
     }
   },
   onInit() {
@@ -94,6 +109,59 @@ export default {
       if (q.catTitle) this.catTitle = q.catTitle
       if (q.testName) this.testName = q.testName
     }
+    this.loadQuestions(this.testName || this.catTitle)
+  },
+  refreshView() {
+    const idx = this.currentIdx
+    const q = this.questions[idx] || { question: '', opts: ['', '', '', ''] }
+    const ans = this.answers
+    this.qNum = idx + 1
+    this.qText = q.question
+    this.opt0 = q.opts[0] || ''
+    this.opt1 = q.opts[1] || ''
+    this.opt2 = q.opts[2] || ''
+    this.opt3 = q.opts[3] || ''
+    this.cls0 = 'option-item ' + (ans[idx] === 0 ? 'opt-sel' : 'opt-nor')
+    this.cls1 = 'option-item ' + (ans[idx] === 1 ? 'opt-sel' : 'opt-nor')
+    this.cls2 = 'option-item ' + (ans[idx] === 2 ? 'opt-sel' : 'opt-nor')
+    this.cls3 = 'option-item ' + (ans[idx] === 3 ? 'opt-sel' : 'opt-nor')
+    this.txt0 = 'opt-text' + (ans[idx] === 0 ? ' opt-text-sel' : '')
+    this.txt1 = 'opt-text' + (ans[idx] === 1 ? ' opt-text-sel' : '')
+    this.txt2 = 'opt-text' + (ans[idx] === 2 ? ' opt-text-sel' : '')
+    this.txt3 = 'opt-text' + (ans[idx] === 3 ? ' opt-text-sel' : '')
+    this.nextBtnText = (idx === this.questions.length - 1) ? '查看结论' : '下一题'
+  },
+  loadQuestions(title) {
+    if (!title) return
+    const info = findTestInfo(title)
+    if (!info) return
+
+    this.testSource = info.source
+    this.testId = info.id
+
+    let res = null
+    if (info.source === 'zhichang') {
+      res = workplaceTest(info.id)
+    } else if (info.source === 'qinggan') {
+      res = emotionAssessmentHandler(info.id)
+    } else if (info.source === 'quwei') {
+      res = funTest(info.id)
+    }
+
+    if (res && res.questions) {
+      const qs = res.questions.map(function(q) {
+        return { question: q.title, opts: q.options }
+      })
+      this.setQuestions(qs)
+    }
+  },
+  setQuestions(qs) {
+    this.questions = qs
+    const arr = []
+    for (let i = 0; i < qs.length; i++) arr.push(-1)
+    this.answers = arr
+    this.currentIdx = 0
+    this.refreshView()
   },
   goBack() {
     router.back()
@@ -102,16 +170,23 @@ export default {
     const newAnswers = this.answers.slice()
     newAnswers[this.currentIdx] = optIdx
     this.answers = newAnswers
+    this.refreshView()
   },
   nextOrResult() {
     if (this.answers[this.currentIdx] === -1) return
-    if (this.isLast) {
+    if (this.currentIdx === this.questions.length - 1) {
       router.replace({
         uri: '/pages/RemencepingJielun',
-        params: { answers: this.answers.join(',') }
+        params: {
+          answers: this.answers.join(','),
+          testName: this.testName || this.catTitle,
+          testSource: this.testSource,
+          testId: String(this.testId)
+        }
       })
     } else {
       this.currentIdx = this.currentIdx + 1
+      this.refreshView()
     }
   }
 }

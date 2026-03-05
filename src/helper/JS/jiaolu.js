@@ -304,3 +304,5 @@ const anxietyAssessment = {
 
 // 测试示例：传入总分50，调用方法获取结果
 // console.log(anxietyAssessment.getRiskLevel(50));
+
+export { anxietyAssessment }

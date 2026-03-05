@@ -1100,7 +1100,7 @@ function funTest(testTypeId, answers) {
   }
 
   // 2. 趣味测评结论配置
-  const funResults = {
+  const workplaceResults = {
     1: {
       // 趣味生活偏好
       low: {
@@ -1429,10 +1429,11 @@ function funTest(testTypeId, answers) {
   // 3.1 计算得分
   const calculateScore = userAnswers => {
     let totalScore = 0
-    // 校验答题数量（20题）
-    if (userAnswers.length !== 20) {
+    const questionCount = currentTest.questions.length
+    // 校验答题数量（按当前测评题目数）
+    if (userAnswers.length !== questionCount) {
       return {
-        error: `答题数量异常（需20题），当前提交${userAnswers.length}题`,
+        error: `答题数量异常（需${questionCount}题），当前提交${userAnswers.length}题`,
         code: -2
       }
     }
@@ -1445,14 +1446,19 @@ function funTest(testTypeId, answers) {
       }
       totalScore += q.options[answerIdx].score
     })
-    // 计算占比（总分范围5-20分 → 换算成0-1的占比）
-    const percentage = (totalScore - 5) / 15
+    // 计算占比（按题目数动态换算成0-1）
+    const minScore = questionCount
+    const maxScore = questionCount * 4
+    const percentage =
+      maxScore === minScore
+        ? 0
+        : (totalScore - minScore) / (maxScore - minScore)
     return { totalScore, percentage }
   }
 
   // 3.2 生成结论
   const getResult = percentage => {
-    const resultConfig = funResults[testTypeId]
+    const resultConfig = workplaceResults[testTypeId]
     if (percentage <= 0.25) return resultConfig.low
     if (percentage <= 0.5) return resultConfig.mediumLow
     if (percentage <= 0.75) return resultConfig.mediumHigh
@@ -1512,4 +1518,4 @@ function funTest(testTypeId, answers) {
 // const funTest2Questions = funTest(2)
 // console.log('趣味社交风格测评题目：', funTest2Questions)
 
-module.exports = { funTest }
+export { funTest }

@@ -250,3 +250,5 @@ const getFortuneById = id => {
 
 // 测试示例：获取ID为5的突破进取势
 // console.log(getFortuneById(5));
+
+export { dailyFortune, getFortuneById }

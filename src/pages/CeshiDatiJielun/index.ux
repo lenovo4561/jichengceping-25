@@ -9,7 +9,7 @@
             <div class="back-btn" onclick="goBack">
               <image class="back-icon" src="/assets/img/back.png"></image>
             </div>
-            <text class="nav-title">心理状态测试</text>
+            <text class="nav-title">{{pageTitle}}</text>
           </div>
           <div class="header-gradient"></div>
         </div>
@@ -35,27 +35,27 @@
         </div>
       </list-item>
 
-      <!-- 心理状态结果块 -->
+      <!-- 结果块 1 -->
       <list-item type="section-0" class="section-item">
         <div class="result-section">
-          <text class="section-title">💯心理状态</text>
-          <text class="section-body">你的心理状态整体处于平稳水平，能够合理调节情绪和压力，具备一定的心理韧性。建议保持规律作息、适度运动，继续关注自身心理健康状态。</text>
+          <text class="section-title">{{sectionTitle1}}</text>
+          <text class="section-body">{{sectionBody1}}</text>
         </div>
       </list-item>
 
-      <!-- 抑郁结果块 -->
-      <list-item type="section-1" class="section-item">
+      <!-- 结果块 2 -->
+      <list-item type="section-1" class="section-item" if="{{showMultiResult}}">
         <div class="result-section">
-          <text class="section-title">😞抑郁</text>
-          <text class="section-body">你目前的抗挫能力有待提升哦~ 面对挫折时，你容易陷入崩溃、自我否定和内耗，习惯逃避、放弃，缺乏直面困境的勇气和解决问题的能力。其实人生难免有低谷，不必过分苛责自己，试着从小挫折开始，慢慢锻炼自己的心态，学会冷静复盘、主动尝试，你的抗挫力一定会慢慢增强，慢慢成为更强大的自己</text>
+          <text class="section-title">{{sectionTitle2}}</text>
+          <text class="section-body">{{sectionBody2}}</text>
         </div>
       </list-item>
 
-      <!-- 焦虑结果块 -->
-      <list-item type="section-2" class="section-item">
+      <!-- 结果块 3 -->
+      <list-item type="section-2" class="section-item" if="{{showMultiResult}}">
         <div class="result-section">
-          <text class="section-title">😟焦虑</text>
-          <text class="section-body">你目前的抗挫能力有待提升哦~ 面对挫折时，你容易陷入崩溃、自我否定和内耗，习惯逃避、放弃，缺乏直面困境的勇气和解决问题的能力。其实人生难免有低谷，不必过分苛责自己，试着从小挫折开始，慢慢锻炼自己的心态，学会冷静复盘、主动尝试，你一定会慢慢成为更坚韧的自己</text>
+          <text class="section-title">{{sectionTitle3}}</text>
+          <text class="section-body">{{sectionBody3}}</text>
         </div>
       </list-item>
 
@@ -79,40 +79,161 @@
 
 <script>
 import router from '@system.router'
+import { mentalHealthTest } from '../../helper/JS/xinlizhuangtai'
+import { depressionAssessment } from '../../helper/JS/yiyufengxian'
+import { anxietyAssessment } from '../../helper/JS/jiaolu'
 
 export default {
   data() {
     return {
       testName: '',
       catTitle: '',
+      pageTitle: '测评结果',
+      showMultiResult: true,
+      sectionTitle1: '💯结果',
+      sectionBody1: '暂无结果',
+      sectionTitle2: '📌说明',
+      sectionBody2: '请重新测试',
+      sectionTitle3: '📝备注',
+      sectionBody3: '测试仅供参考',
       // 雷达图5维度模拟数据（0~1归一化）
       // 顺序: fruity, bitter, heavy, strong, sunny
-      series1: [0.62, 0.68, 0.52, 0.45, 0.58],  // 粉色系（当前状态）
+      series1: [0.62, 0.68, 0.52, 0.45, 0.58],  // 粉色/红色系（当前状态）
       series2: [0.88, 0.92, 0.76, 0.82, 0.95],   // 黄色系（参考値）
-      series3: [0.50, 0.55, 0.60, 0.48, 0.65]    // 蓝色系（心理状态）
+      series3: [0.50, 0.55, 0.60, 0.48, 0.65]    // 米色/肤色系（心理状态）
     }
   },
   onInit() {
-    if (this.$page && this.$page.query) {
-      const q = this.$page.query
-      if (q.testName) this.testName = q.testName
-      if (q.catTitle) this.catTitle = q.catTitle
+    try {
+      if (this.$page && this.$page.query) {
+        const q = this.$page.query
+        if (q.testName) this.testName = q.testName
+        if (q.catTitle) this.catTitle = q.catTitle
+        const answers = q.answers ? String(q.answers).split(',').map(Number) : []
+        this.computeResult(answers)
+      }
+    } catch (e) {
+      this.pageTitle = '测评结果'
+      this.sectionTitle1 = '💯结果'
+      this.sectionBody1 = '结果解析失败：' + String(e.message || e)
+      this.sectionTitle2 = '📌说明'
+      this.sectionBody2 = '请重新测试'
+      this.sectionTitle3 = '📝备注'
+      this.sectionBody3 = '测试仅供参考'
     }
+  },
+  parseRange(rangeText) {
+    const text = String(rangeText || '').replace('分', '')
+    const arr = text.split('-').map(Number)
+    return { min: arr[0] || 0, max: arr[1] || 0 }
+  },
+  pickByRange(list, score) {
+    if (!list || !list.length) return null
+    for (let i = 0; i < list.length; i++) {
+      const rg = this.parseRange(list[i].scoreRange)
+      if (score >= rg.min && score <= rg.max) return list[i]
+    }
+    return list[list.length - 1]
+  },
+  sumByOptionValue(questions, answers) {
+    let total = 0
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i]
+      const idx = answers[i]
+      if (idx === undefined || idx < 0 || idx > 3) continue
+      const opt = q.options[idx]
+      total += (opt && typeof opt.value === 'number') ? opt.value : (idx + 1)
+    }
+    return total
+  },
+  computeResult(answers) {
+    const name = this.testName || this.catTitle
+    this.pageTitle = name || '测评结果'
+
+    if (name === '心理状态测试') {
+      const qs = mentalHealthTest.questions || []
+      const scores = { depression: 0, anxiety: 0, interpersonal: 0 }
+      for (let i = 0; i < qs.length; i++) {
+        const q = qs[i]
+        const idx = answers[i]
+        if (idx === undefined || idx < 0 || idx > 3) continue
+        scores[q.dimension] += (idx + 1)
+      }
+
+      const dep = this.pickByRange(mentalHealthTest.conclusions.depression, scores.depression)
+      const anx = this.pickByRange(mentalHealthTest.conclusions.anxiety, scores.anxiety)
+      const inter = this.pickByRange(mentalHealthTest.conclusions.interpersonal, scores.interpersonal)
+
+      this.sectionTitle1 = '😞抑郁'
+      this.sectionBody1 = `得分：${scores.depression}分\n等级：${dep ? dep.level : '暂无'}\n${dep ? dep.desc : ''}`
+      this.sectionTitle2 = '😟焦虑'
+      this.sectionBody2 = `得分：${scores.anxiety}分\n等级：${anx ? anx.level : '暂无'}\n${anx ? anx.desc : ''}`
+      this.sectionTitle3 = '👥人际关系敏感'
+      this.sectionBody3 = `得分：${scores.interpersonal}分\n等级：${inter ? inter.level : '暂无'}\n${inter ? inter.desc : ''}`
+
+      const dn = Math.max(0, Math.min(1, (scores.depression - 11) / 33))
+      const an = Math.max(0, Math.min(1, (scores.anxiety - 11) / 33))
+      const inn = Math.max(0, Math.min(1, (scores.interpersonal - 10) / 30))
+      this.series1 = [dn, an, inn, (dn + an) / 2, (an + inn) / 2]
+      this.showMultiResult = true
+      return
+    }
+
+    if (name === '抑郁风险评估') {
+      const total = this.sumByOptionValue(depressionAssessment.questions || [], answers)
+      const risk = depressionAssessment.getRiskLevel(total) || {}
+      this.sectionTitle1 = '😞抑郁风险评估'
+      this.sectionBody1 = `总分：${total}分\n等级：${risk.level || '暂无'}\n${risk.conclusion || risk.error || ''}`
+      this.sectionTitle2 = '📊评分规则'
+      this.sectionBody2 = depressionAssessment.scoringRule || ''
+      this.sectionTitle3 = '📌备注'
+      this.sectionBody3 = depressionAssessment.remark || ''
+      const n = Math.max(0, Math.min(1, (total - 25) / 75))
+      this.series1 = [n, n, n, n, n]
+      this.showMultiResult = false
+      return
+    }
+
+    if (name === '焦虑测试') {
+      const total = this.sumByOptionValue(anxietyAssessment.questions || [], answers)
+      const risk = anxietyAssessment.getRiskLevel(total) || {}
+      this.sectionTitle1 = '😟焦虑测试'
+      this.sectionBody1 = `总分：${total}分\n等级：${risk.level || '暂无'}\n${risk.conclusion || risk.error || ''}`
+      this.sectionTitle2 = '📊评分规则'
+      this.sectionBody2 = anxietyAssessment.scoringRule || ''
+      this.sectionTitle3 = '📌备注'
+      this.sectionBody3 = anxietyAssessment.remark || ''
+      const n = Math.max(0, Math.min(1, (total - 25) / 75))
+      this.series1 = [n, n, n, n, n]
+      this.showMultiResult = false
+      return
+    }
+
+    this.sectionTitle1 = '💯结果'
+    this.sectionBody1 = '未匹配到测试类型，请重新测试。'
+    this.sectionTitle2 = '📌说明'
+    this.sectionBody2 = ''
+    this.sectionTitle3 = '📝备注'
+    this.sectionBody3 = ''
+    this.showMultiResult = false
   },
   onReady() {
     const self = this
     setTimeout(function () {
-      self.drawRadar()
+      try {
+        self.drawRadar()
+      } catch (e) {}
     }, 100)
   },
   drawRadar() {
     const canvas = this.$element('radarCanvas')
     if (!canvas) return
     const ctx = canvas.getContext('2d')
+    if (!ctx) return
 
-    const W = 180
+    const W = 220
     const H = 190
-    const cx = W / 2       // 90
+    const cx = W / 2       // 110
     const cy = H / 2 - 4  // 91
     const R = 58            // 最大半径
     const N = 5             // 五边形
@@ -196,7 +317,7 @@ export default {
       ctx.fill()
     }
 
-    // ---- 绘制蓝色系（心理状态） ----
+    // ---- 绘制米色系（心理状态） ----
     const s3 = this.series3
     ctx.beginPath()
     for (let i = 0; i < N; i++) {
@@ -206,16 +327,16 @@ export default {
       else ctx.lineTo(x, y)
     }
     ctx.closePath()
-    ctx.fillStyle = 'rgba(40, 160, 240, 0.18)'
+    ctx.fillStyle = 'rgba(224, 176, 144, 0.18)'
     ctx.fill()
-    ctx.strokeStyle = '#28a0f0'
+    ctx.strokeStyle = '#e0b090'
     ctx.lineWidth = 1
     ctx.stroke()
-    // 蓝色顶点圆点
+    // 米色顶点圆点
     for (let i = 0; i < N; i++) {
       ctx.beginPath()
       ctx.arc(ptX(R * s3[i], i), ptY(R * s3[i], i), 3, 0, 2 * Math.PI)
-      ctx.fillStyle = '#28a0f0'
+      ctx.fillStyle = '#e0b090'
       ctx.fill()
     }
     const labelR = R + 16
@@ -346,13 +467,7 @@ export default {
   padding-top: 12px;
 }
 .blur-layer {
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  width: 254px;
-  height: 64px;
-  background-color: rgba(255, 255, 255, 0.18);
-  filter: blur(10px);
+  display: none;
 }
 .frost-overlay {
   position: absolute;
@@ -399,7 +514,7 @@ export default {
   justify-content: center;
 }
 .radar-canvas {
-  width: 180px;
+  width: 220px;
   height: 190px;
 }
 

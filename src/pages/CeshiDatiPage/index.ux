@@ -29,19 +29,19 @@
       <div class="question-block">
         <text class="q-title">{{qIdx + 1}}、{{q.question}}</text>
         <div class="options-row">
-          <div class="option-cell {{answers[qIdx] === 0 ? 'opt-selected' : 'opt-normal'}}" onclick="selectOption(qIdx, 0)">
-            <text class="opt-text {{answers[qIdx] === 0 ? 'opt-text-sel' : ''}}">A. {{q.opts[0]}}</text>
+          <div class="{{answers[qIdx] === 0 ? 'option-cell opt-selected' : 'option-cell opt-normal'}}" onclick="selectOption(qIdx, 0)">
+            <text class="{{answers[qIdx] === 0 ? 'opt-text opt-text-sel' : 'opt-text'}}">A. {{q.opts[0]}}</text>
           </div>
-          <div class="option-cell {{answers[qIdx] === 1 ? 'opt-selected' : 'opt-normal'}}" onclick="selectOption(qIdx, 1)">
-            <text class="opt-text {{answers[qIdx] === 1 ? 'opt-text-sel' : ''}}">B. {{q.opts[1]}}</text>
+          <div class="{{answers[qIdx] === 1 ? 'option-cell opt-selected' : 'option-cell opt-normal'}}" onclick="selectOption(qIdx, 1)">
+            <text class="{{answers[qIdx] === 1 ? 'opt-text opt-text-sel' : 'opt-text'}}">B. {{q.opts[1]}}</text>
           </div>
         </div>
         <div class="options-row">
-          <div class="option-cell {{answers[qIdx] === 2 ? 'opt-selected' : 'opt-normal'}}" onclick="selectOption(qIdx, 2)">
-            <text class="opt-text {{answers[qIdx] === 2 ? 'opt-text-sel' : ''}}">C. {{q.opts[2]}}</text>
+          <div class="{{answers[qIdx] === 2 ? 'option-cell opt-selected' : 'option-cell opt-normal'}}" onclick="selectOption(qIdx, 2)">
+            <text class="{{answers[qIdx] === 2 ? 'opt-text opt-text-sel' : 'opt-text'}}">C. {{q.opts[2]}}</text>
           </div>
-          <div class="option-cell {{answers[qIdx] === 3 ? 'opt-selected' : 'opt-normal'}}" onclick="selectOption(qIdx, 3)">
-            <text class="opt-text {{answers[qIdx] === 3 ? 'opt-text-sel' : ''}}">D. {{q.opts[3]}}</text>
+          <div class="{{answers[qIdx] === 3 ? 'option-cell opt-selected' : 'option-cell opt-normal'}}" onclick="selectOption(qIdx, 3)">
+            <text class="{{answers[qIdx] === 3 ? 'opt-text opt-text-sel' : 'opt-text'}}">D. {{q.opts[3]}}</text>
           </div>
         </div>
       </div>
@@ -50,7 +50,7 @@
     <!-- 底部查看结论按钮（答完后激活） -->
     <list-item type="footer" class="footer-item">
       <div class="bottom-bar">
-        <div class="result-btn {{allAnswered ? 'btn-active' : 'btn-disabled'}}" onclick="viewResult">
+        <div class="{{allAnswered ? 'result-btn btn-active' : 'result-btn btn-disabled'}}" onclick="viewResult">
           <text class="result-btn-text">查看结论</text>
         </div>
       </div>
@@ -63,6 +63,9 @@ import router from '@system.router'
 const zhichangHelper = require('../../helper/JS/zhichang')
 const quweiHelper = require('../../helper/JS/quwei')
 const qingganHelper = require('../../helper/JS/qinggan')
+import { mentalHealthTest } from '../../helper/JS/xinlizhuangtai'
+import { depressionAssessment } from '../../helper/JS/yiyufengxian'
+import { anxietyAssessment } from '../../helper/JS/jiaolu'
 
 export default {
   data() {
@@ -91,7 +94,34 @@ export default {
     if (!testName) return
     let questions = []
 
-    if (testName.indexOf('职场') === 0) {
+    if (testName === '心理状态测试') {
+      // 心理状态：xinlizhuangtai.js
+      const arr = mentalHealthTest && mentalHealthTest.questions ? mentalHealthTest.questions : []
+      questions = arr.map(function(q) {
+        return {
+          question: q.title,
+          opts: [q.options.A, q.options.B, q.options.C, q.options.D]
+        }
+      })
+    } else if (testName === '抑郁风险评估') {
+      // 抑郁风险评估：yiyufengxian.js
+      const arr = depressionAssessment && depressionAssessment.questions ? depressionAssessment.questions : []
+      questions = arr.map(function(q) {
+        return {
+          question: q.title,
+          opts: q.options.map(function(opt) { return opt.text })
+        }
+      })
+    } else if (testName === '焦虑测试') {
+      // 焦虑测试：jiaolu.js
+      const arr = anxietyAssessment && anxietyAssessment.questions ? anxietyAssessment.questions : []
+      questions = arr.map(function(q) {
+        return {
+          question: q.title,
+          opts: q.options.map(function(opt) { return opt.text })
+        }
+      })
+    } else if (testName.indexOf('职场') === 0) {
       // 职场类：zhichang.js，遍历 1-20 查找匹配标题
       for (let i = 1; i <= 20; i++) {
         const res = zhichangHelper.workplaceTest(i)
@@ -134,6 +164,11 @@ export default {
       const initAnswers = []
       for (let i = 0; i < questions.length; i++) initAnswers.push(-1)
       this.answers = initAnswers
+    } else {
+      this.questions = [
+        { question: '题目加载失败，请返回重试', opts: ['返回上一页重试', '', '', ''] }
+      ]
+      this.answers = [-1]
     }
   },
   goBack() {

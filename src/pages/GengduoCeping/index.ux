@@ -217,8 +217,8 @@ export default {
   },
   goDetail(title) {
     router.push({
-      uri: '/pages/CeshiJinruye',
-      params: { testTitle: title }
+      uri: '/pages/RemencepingDati',
+      params: { catTitle: title, testName: title }
     })
   }
 }
@@ -343,7 +343,7 @@ export default {
 }
 .card-title {
   margin-top: 6px;
-  font-size: 11px;
+  font-size: 9px;
   color: #1a1a1a;
   font-weight: bold;
   lines: 1;

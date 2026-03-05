@@ -155,8 +155,8 @@ export default {
   },
   goDetail(title) {
     router.push({
-      uri: '/pages/CeshiJinruye',
-      params: { testTitle: title }
+      uri: '/pages/RemencepingDati',
+      params: { catTitle: title, testName: title }
     })
   }
 }
@@ -203,7 +203,7 @@ export default {
   margin-top: -14px;
   border-top-left-radius: 14px;
   border-top-right-radius: 14px;
-  background-color: rgba(248, 248, 250, 0.4);
+  background-color: rgba(248, 248, 250, 0.92);
 }
 .category-header {
   flex-direction: row;
@@ -298,6 +298,6 @@ export default {
   margin-bottom:10px
 }
 .spacer-item {
-  height: 20px;
+  height: 80px;
 }
 </style>

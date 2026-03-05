@@ -305,3 +305,5 @@ depressionAssessment.getRiskLevel = function(totalScore) {
 
 // 测试示例：若总分40，调用方法获取风险等级
 // console.log(depressionAssessment.getRiskLevel(40));
+
+export { depressionAssessment }

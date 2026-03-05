@@ -27,7 +27,7 @@
         </div>
         <div class="desc-row">
           <text class="bullet">•</text>
-          <text class="desc-text">测试一共32题，请尽量在10分钟内完成</text>
+          <text class="desc-text">测试一共{{totalCount}}题，请尽量在10分钟内完成</text>
         </div>
         <div class="desc-row">
           <text class="bullet">•</text>
@@ -55,12 +55,18 @@ import router from '@system.router'
 export default {
   data() {
     return {
-      testTitle: '心理状态测试'
+      testTitle: '心理状态测试',
+      totalCount: 32
     }
   },
   onInit() {
     if (this.$page && this.$page.query && this.$page.query.testTitle) {
       this.testTitle = this.$page.query.testTitle
+    }
+    if (this.testTitle === '焦虑测试' || this.testTitle === '抑郁风险评估') {
+      this.totalCount = 25
+    } else {
+      this.totalCount = 32
     }
   },
   goBack() {

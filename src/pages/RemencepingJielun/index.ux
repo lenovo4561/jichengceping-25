@@ -23,7 +23,6 @@
           <text class="result-tag-text">结论</text>
         </div>
       </div>
-
       <!-- 结论内容 -->
       <text class="result-text">{{resultText}}</text>
       </div>
@@ -43,33 +42,94 @@
 
 <script>
 import router from '@system.router'
-
-const RESULTS = [
-  '你是一个冷静理智的人，面对问题善于独立思考，不轻易被情绪左右。遇到困难时，你总是能找到最合适的解决方法，身边的人都十分信赖你的判断力。',
-  '你是一个感性细腻的人，对周围的人和事充满关注与温情。你善于体察他人情绪，总是第一个伸出援手，是大家心中最可靠的朋友。',
-  '你目前的抗挫能力有待提升哦~ 面对挫折时，你容易陷入崩溃、自我否定和内耗，习惯逃避、放弃，缺乏直面困境的勇气和解决问题的能力。其实人生难免有低谷，不必过分苛责自己，试着从小挫折开始，慢慢锻炼自己的心态，学会冷静复盘、主动尝试，你的抗挫力一定会慢慢增强，慢慢成为更强大的自己。'
-]
+import { workplaceTest } from '../../helper/JS/zhichang'
+import { emotionAssessmentHandler } from '../../helper/JS/qinggan'
+import { funTest } from '../../helper/JS/quwei'
 
 export default {
   data() {
     return {
-      resultText: ''
+      resultTitle: '',
+      resultText: '结论加载中...',
+      testName: '',
+      testSource: '',
+      testId: 0
     }
   },
   onInit() {
-    let idx = 2
-    if (this.$page && this.$page.query && this.$page.query.answers) {
-      const answers = this.$page.query.answers.split(',').map(Number)
-      const sum = answers.reduce((a, b) => a + b, 0)
-      idx = sum % 3
+    try {
+      if (this.$page && this.$page.query) {
+        const q = this.$page.query
+        if (q.testName) this.testName = q.testName
+        if (q.testSource) this.testSource = q.testSource
+        if (q.testId) this.testId = parseInt(q.testId, 10)
+        if (q.answers) {
+          const rawAnswers = Array.isArray(q.answers) ? q.answers.join(',') : String(q.answers)
+          const indices = rawAnswers.split(',').map(Number)
+          this.calcResult(indices)
+          return
+        }
+      }
+      this.resultTitle = ''
+      this.resultText = '暂无结论，请重新测试。'
+    } catch (e) {
+      this.resultTitle = ''
+      this.resultText = '页面初始化失败：' + String(e.message || e)
     }
-    this.resultText = RESULTS[idx]
+  },
+  calcResult(indices) {
+    const src = this.testSource
+    const id = this.testId
+    try {
+      if (src === 'qinggan') {
+        const res = emotionAssessmentHandler(id, indices)
+        if (res && res.result) {
+          this.resultTitle = res.result.title || ''
+          this.resultText = res.result.content || ''
+          return
+        }
+        this.resultText = (res && res.error) ? res.error : '结论获取失败'
+        return
+      }
+
+      if (src === 'zhichang') {
+        const scores = indices.map(function(idx) { return idx + 1 })
+        const res = workplaceTest(id, scores)
+        if (res && res.success && res.data) {
+          this.resultTitle = res.data.resultTitle || ''
+          this.resultText = res.data.resultContent || ''
+          return
+        }
+        this.resultText = (res && res.message) ? res.message : '结论获取失败'
+        return
+      }
+
+      if (src === 'quwei') {
+        const res = funTest(id, indices)
+        if (res && res.result) {
+          this.resultTitle = res.result.title || ''
+          this.resultText = res.result.content || ''
+          return
+        }
+        this.resultText = (res && res.error) ? res.error : '结论获取失败'
+        return
+      }
+
+      this.resultTitle = ''
+      this.resultText = '暂无结论，请重新测试。'
+    } catch (e) {
+      this.resultTitle = ''
+      this.resultText = '结论解析出错：' + String(e.message || e)
+    }
   },
   goBack() {
     router.back()
   },
   retry() {
-    router.replace({ uri: '/pages/RemencepingDati' })
+    router.replace({
+      uri: '/pages/RemencepingDati',
+      params: { catTitle: this.testName, testName: this.testName }
+    })
   },
   goHome() {
     router.clear()
@@ -82,8 +142,7 @@ export default {
 .page-wrapper {
   flex: 1;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
+  width: 250px;
   background-color: #f5f5f5;
 }
 
@@ -159,13 +218,7 @@ export default {
   overflow: hidden;
 }
 .blur-layer {
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  width: 250px;
-  height: 60px;
-  background-color: rgba(255, 255, 255, 0.18);
-  filter: blur(10px);
+  display: none;
 }
 .frost-overlay {
   position: absolute;
@@ -206,6 +259,13 @@ export default {
 }
 
 /* 结论文字 */
+.result-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+}
+
 .result-text {
   font-size: 11px;
   color: #1a1a1a;
