@@ -1,9 +1,9 @@
-<template>
+﻿<template>
   <list class="page-list">
     <!-- 顶部背景区 -->
     <list-item type="header" class="header-item">
       <div class="header-area">
-        <image class="header-bg" src="/assets/img/shoujibizhi-bg.png"></image>
+        <image class="header-bg" src="/pkg_main/assets/img/shoujibizhi-bg.png"></image>
         <div class="header-gradient"></div>
       </div>
     </list-item>
@@ -26,7 +26,7 @@
 
     <!-- 底部留白 -->
     <list-item type="footer" class="footer-item">
-      <div style="width: 250px; height: 24px;"></div>
+      <div style="width: 250px; height: 70px;"></div>
     </list-item>
   </list>
 </template>

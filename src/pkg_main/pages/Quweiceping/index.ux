@@ -1,9 +1,9 @@
-<template>
+﻿<template>
   <div class="page-wrapper">
     <list class="main-list">
       <!-- 顶部背景图 -->
       <list-item type="banner" class="banner-item">
-        <image class="top-bg" src="/assets/img/remenceping-bg.png"></image>
+        <image class="top-bg" src="/pkg_main/assets/img/remenceping-bg.png"></image>
         <!-- 磨砂渐变叠层：从透明→不透明，高度100px，叠在背景图底部 -->
         <div class="frosted-gradient"></div>
       </list-item>
@@ -18,7 +18,7 @@
             </div>
             <div class="header-right" onclick="viewMore(cat0.title)">
               <text class="view-more-text">查看更多</text>
-              <image class="arrow-icon" src="/assets/img/more.png"></image>
+              <image class="arrow-icon" src="/pkg_main/assets/img/more.png"></image>
             </div>
           </div>
         </list-item>
@@ -27,7 +27,7 @@
             <div class="card" onclick="goDetail(cat0.items[0].title)">
               <div class="card-image-box">
                 <image class="card-img" src="{{cat0.items[0].bg}}"></image>
-                <image class="hot-badge" src="/assets/img/HOT.png"></image>
+                <image class="hot-badge" src="/pkg_main/assets/img/HOT.png"></image>
                 <div class="count-tag"><text class="count-text">{{cat0.items[0].count}}</text></div>
               </div>
               <text class="card-title">{{cat0.items[0].title}}</text>
@@ -35,7 +35,7 @@
             <div class="card" onclick="goDetail(cat0.items[1].title)">
               <div class="card-image-box">
                 <image class="card-img" src="{{cat0.items[1].bg}}"></image>
-                <image class="hot-badge" src="/assets/img/HOT.png"></image>
+                <image class="hot-badge" src="/pkg_main/assets/img/HOT.png"></image>
                 <div class="count-tag"><text class="count-text">{{cat0.items[1].count}}</text></div>
               </div>
               <text class="card-title">{{cat0.items[1].title}}</text>
@@ -52,7 +52,7 @@
             </div>
             <div class="header-right" onclick="viewMore(cat1.title)">
               <text class="view-more-text">查看更多</text>
-              <image class="arrow-icon" src="/assets/img/more.png"></image>
+              <image class="arrow-icon" src="/pkg_main/assets/img/more.png"></image>
             </div>
           </div>
         </list-item>
@@ -61,7 +61,7 @@
             <div class="card" onclick="goDetail(cat1.items[0].title)">
               <div class="card-image-box">
                 <image class="card-img" src="{{cat1.items[0].bg}}"></image>
-                <image class="hot-badge" src="/assets/img/HOT.png"></image>
+                <image class="hot-badge" src="/pkg_main/assets/img/HOT.png"></image>
                 <div class="count-tag"><text class="count-text">{{cat1.items[0].count}}</text></div>
               </div>
               <text class="card-title">{{cat1.items[0].title}}</text>
@@ -69,7 +69,7 @@
             <div class="card" onclick="goDetail(cat1.items[1].title)">
               <div class="card-image-box">
                 <image class="card-img" src="{{cat1.items[1].bg}}"></image>
-                <image class="hot-badge" src="/assets/img/HOT.png"></image>
+                <image class="hot-badge" src="/pkg_main/assets/img/HOT.png"></image>
                 <div class="count-tag"><text class="count-text">{{cat1.items[1].count}}</text></div>
               </div>
               <text class="card-title">{{cat1.items[1].title}}</text>
@@ -86,7 +86,7 @@
             </div>
             <div class="header-right" onclick="viewMore(cat2.title)">
               <text class="view-more-text">查看更多</text>
-              <image class="arrow-icon" src="/assets/img/more.png"></image>
+              <image class="arrow-icon" src="/pkg_main/assets/img/more.png"></image>
             </div>
           </div>
         </list-item>
@@ -95,7 +95,7 @@
             <div class="card" onclick="goDetail(cat2.items[0].title)">
               <div class="card-image-box">
                 <image class="card-img" src="{{cat2.items[0].bg}}"></image>
-                <image class="hot-badge" src="/assets/img/HOT.png"></image>
+                <image class="hot-badge" src="/pkg_main/assets/img/HOT.png"></image>
                 <div class="count-tag"><text class="count-text">{{cat2.items[0].count}}</text></div>
               </div>
               <text class="card-title">{{cat2.items[0].title}}</text>
@@ -103,7 +103,7 @@
             <div class="card" onclick="goDetail(cat2.items[1].title)">
               <div class="card-image-box">
                 <image class="card-img" src="{{cat2.items[1].bg}}"></image>
-                <image class="hot-badge" src="/assets/img/HOT.png"></image>
+                <image class="hot-badge" src="/pkg_main/assets/img/HOT.png"></image>
                 <div class="count-tag"><text class="count-text">{{cat2.items[1].count}}</text></div>
               </div>
               <text class="card-title">{{cat2.items[1].title}}</text>
@@ -126,36 +126,48 @@ export default {
       cat0: {
         title: '职场人必测',
         items: [
-          { title: '职场沟通力测评', count: '113,256人测过', bg: '/assets/img/zc/1.jpg' },
-          { title: '职场执行力测评', count: '113,256人测过', bg: '/assets/img/zc/2.jpg' }
+          { title: '职场沟通力测评', count: '113,256人测过', bg: '/pkg_main/assets/img/zc/1.jpg' },
+          { title: '职场执行力测评', count: '113,256人测过', bg: '/pkg_main/assets/img/zc/2.jpg' }
         ]
       },
       cat1: {
         title: '情感状态自测',
         items: [
-          { title: '情感自愈能力测评', count: '113,256人测过', bg: '/assets/img/qg/1.jpg' },
-          { title: '情感表达能力测评', count: '113,256人测过', bg: '/assets/img/qg/2.jpg' }
+          { title: '情感自愈能力测评', count: '113,256人测过', bg: '/pkg_main/assets/img/qg/1.jpg' },
+          { title: '情感表达能力测评', count: '113,256人测过', bg: '/pkg_main/assets/img/qg/2.jpg' }
         ]
       },
       cat2: {
         title: '趣味灵魂测试',
         items: [
-          { title: '趣味生活偏好测评', count: '113,256人测过', bg: '/assets/img/qw/1.jpg' },
-          { title: '趣味社交风格测评', count: '113,256人测过', bg: '/assets/img/qw/2.jpg' }
+          { title: '趣味生活偏好测评', count: '113,256人测过', bg: '/pkg_main/assets/img/qw/1.jpg' },
+          { title: '趣味社交风格测评', count: '113,256人测过', bg: '/pkg_main/assets/img/qw/2.jpg' }
         ]
       }
     }
   },
-  onInit() {},
+  _randCount() {
+    const n = Math.floor(Math.random() * 900000) + 50000
+    const s = String(n)
+    return s.slice(0, s.length - 3) + ',' + s.slice(s.length - 3) + '人测过'
+  },
+  onInit() {
+    this.cat0.items[0].count = this._randCount()
+    this.cat0.items[1].count = this._randCount()
+    this.cat1.items[0].count = this._randCount()
+    this.cat1.items[1].count = this._randCount()
+    this.cat2.items[0].count = this._randCount()
+    this.cat2.items[1].count = this._randCount()
+  },
   viewMore(title) {
     router.push({
-      uri: '/pages/GengduoCeping',
+      uri: '/pkg_main/pages/GengduoCeping',
       params: { catTitle: title || '职场人必测' }
     })
   },
   goDetail(title) {
     router.push({
-      uri: '/pages/RemencepingDati',
+      uri: '/pkg_main/pages/RemencepingDati',
       params: { catTitle: title, testName: title }
     })
   }

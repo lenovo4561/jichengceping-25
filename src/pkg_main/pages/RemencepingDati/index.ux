@@ -2,10 +2,10 @@
   <div class="page-wrapper">
     <!-- 顶部背景区 -->
     <div class="header-area">
-      <image class="header-bg" src="/assets/img/remencepingdati-bg.png"></image>
+      <image class="header-bg" src="/pkg_main/assets/img/remencepingdati-bg.png"></image>
       <div class="nav-bar">
         <div class="back-btn" onclick="goBack">
-          <image class="back-icon" src="/assets/img/back.png"></image>
+          <image class="back-icon" src="/pkg_main/assets/img/back.png"></image>
         </div>
         <div style="width: 22px;"></div>
       </div>
@@ -176,7 +176,7 @@ export default {
     if (this.answers[this.currentIdx] === -1) return
     if (this.currentIdx === this.questions.length - 1) {
       router.replace({
-        uri: '/pages/RemencepingJielun',
+        uri: '/pkg_main/pages/RemencepingJielun',
         params: {
           answers: this.answers.join(','),
           testName: this.testName || this.catTitle,

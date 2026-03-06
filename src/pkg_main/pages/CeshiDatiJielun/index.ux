@@ -1,13 +1,13 @@
-<template>
+﻿<template>
   <div class="root-wrap">
     <list class="page-list">
       <!-- 顶部背景区 -->
       <list-item type="header" class="header-item">
         <div class="header-area">
-          <image class="header-bg" src="/assets/img/shoujibizhi-bg-1.png"></image>
+          <image class="header-bg" src="/pkg_main/assets/img/shoujibizhi-bg-1.png"></image>
           <div class="nav-bar">
             <div class="back-btn" onclick="goBack">
-              <image class="back-icon" src="/assets/img/back.png"></image>
+              <image class="back-icon" src="/pkg_main/assets/img/back.png"></image>
             </div>
             <text class="nav-title">{{pageTitle}}</text>
           </div>
@@ -361,13 +361,13 @@ export default {
   },
   retry() {
     router.replace({
-      uri: '/pages/CeshiDatiPage',
+      uri: '/pkg_main/pages/CeshiDatiPage',
       params: { testName: this.testName, catTitle: this.catTitle }
     })
   },
   goHome() {
     router.clear()
-    router.replace({ uri: '/pages/Main' })
+    router.replace({ uri: '/pkg_main/pages/Main' })
   }
 }
 </script>

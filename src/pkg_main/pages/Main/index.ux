@@ -1,4 +1,4 @@
-<import name="quweiceping-page" src="../Quweiceping/index.ux"></import>
+﻿<import name="quweiceping-page" src="../Quweiceping/index.ux"></import>
 <import name="xinlijiankang-page" src="../Xinlijiankang/index.ux"></import>
 <import name="meiriyunshi-page" src="../Meiriyunshi/index.ux"></import>
 <import name="mine-page" src="../Mine/index.ux"></import>

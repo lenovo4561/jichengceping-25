@@ -47,50 +47,56 @@
       "pages/Splash": {
         "component": "index"
       },
-      "pages/Webview": {
+      "pkg_main/pages/Webview": {
         "component": "index"
       },
-      "pages/Main": {
+      "pkg_main/pages/Main": {
         "component": "index"
       },
-      "pages/Quweiceping": {
+      "pkg_main/pages/Quweiceping": {
         "component": "index"
       },
-      "pages/Xinlijiankang": {
+      "pkg_main/pages/Xinlijiankang": {
         "component": "index"
       },
-      "pages/Meiriyunshi": {
+      "pkg_main/pages/Meiriyunshi": {
         "component": "index"
       },
-      "pages/Mine": {
+      "pkg_main/pages/Mine": {
         "component": "index"
       },
-      "pages/Demo": {
+      "pkg_main/pages/Demo": {
         "component": "index"
       },
-      "pages/DemoDetail": {
+      "pkg_main/pages/DemoDetail": {
         "component": "index"
       },
-      "pages/GengduoCeping": {
+      "pkg_main/pages/GengduoCeping": {
         "component": "index"
       },
-      "pages/RemencepingDati": {
+      "pkg_main/pages/RemencepingDati": {
         "component": "index"
       },
-      "pages/RemencepingJielun": {
+      "pkg_main/pages/RemencepingJielun": {
         "component": "index"
       },
-      "pages/CeshiJinruye": {
+      "pkg_main/pages/CeshiJinruye": {
         "component": "index"
       },
-      "pages/CeshiDatiPage": {
+      "pkg_main/pages/CeshiDatiPage": {
         "component": "index"
       },
-      "pages/CeshiDatiJielun": {
+      "pkg_main/pages/CeshiDatiJielun": {
         "component": "index"
       }
     }
   },
+  "subpackages": [
+    {
+      "name": "pkg_main",
+      "resource": "pkg_main"
+    }
+  ],
   "display": {
     "titleBarBackgroundColor": "#f2f2f2",
     "titleBarTextColor": "#414141",
@@ -100,38 +106,38 @@
         "titleBar": false,
         "menu": false
       },
-      "pages/Main": {
+      "pkg_main/pages/Main": {
         "titleBar": false,
         "menu": false
       },
-      "pages/Demo": {
+      "pkg_main/pages/Demo": {
         "titleBarText": "快应用示例模版",
         "menu": false
       },
-      "pages/DemoDetail": {
+      "pkg_main/pages/DemoDetail": {
         "titleBarText": "详情页"
       },
-      "pages/GengduoCeping": {
+      "pkg_main/pages/GengduoCeping": {
         "titleBar": false,
         "menu": false
       },
-      "pages/RemencepingDati": {
+      "pkg_main/pages/RemencepingDati": {
         "titleBar": false,
         "menu": false
       },
-      "pages/RemencepingJielun": {
+      "pkg_main/pages/RemencepingJielun": {
         "titleBar": false,
         "menu": false
       },
-      "pages/CeshiJinruye": {
+      "pkg_main/pages/CeshiJinruye": {
         "titleBar": false,
         "menu": false
       },
-      "pages/CeshiDatiPage": {
+      "pkg_main/pages/CeshiDatiPage": {
         "titleBar": false,
         "menu": false
       },
-      "pages/CeshiDatiJielun": {
+      "pkg_main/pages/CeshiDatiJielun": {
         "titleBar": false,
         "menu": false
       }

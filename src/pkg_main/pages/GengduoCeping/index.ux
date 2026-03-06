@@ -3,16 +3,16 @@
     <list class="content-list">
       <!-- 顶部背景图 + 导航栏 -->
       <list-item type="header" class="header-item">
-        <image class="header-bg" src="/assets/img/gengduoceping-bg.png"></image>
+        <image class="header-bg" src="/pkg_main/assets/img/gengduoceping-bg.png"></image>
+        <!-- 底部磨砂渐变叠层 -->
+        <div class="header-gradient"></div>
         <div class="nav-bar">
           <div class="back-btn" onclick="goBack">
-            <image class="back-icon" src="/assets/img/back.png"></image>
+            <image class="back-icon" src="/pkg_main/assets/img/back.png"></image>
           </div>
           <text class="nav-title">{{catTitle}}</text>
           <div class="nav-placeholder"></div>
         </div>
-        <!-- 底部磨砂渐变叠层 -->
-        <div class="header-gradient"></div>
       </list-item>
 
       <!-- 磨砂面板起始 + 卡片行 -->
@@ -209,7 +209,7 @@ export default {
     this.cards = titles.map((title, i) => ({
       title,
       count: '113,256人测过',
-      bg: '/assets/img/' + dir + '/' + (i + 1) + '.jpg'
+      bg: '/pkg_main/assets/img/' + dir + '/' + (i + 1) + '.jpg'
     }))
   },
   goBack() {
@@ -217,7 +217,7 @@ export default {
   },
   goDetail(title) {
     router.push({
-      uri: '/pages/RemencepingDati',
+      uri: '/pkg_main/pages/RemencepingDati',
       params: { catTitle: title, testName: title }
     })
   }

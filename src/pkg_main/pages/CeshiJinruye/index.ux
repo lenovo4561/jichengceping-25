@@ -1,18 +1,18 @@
-<template>
+﻿<template>
   <div class="page-wrapper">
     <!-- 顶部背景区 -->
     <div class="header-area">
-      <image class="header-bg" src="/assets/img/ceshijinruye-bg.png"></image>
+      <image class="header-bg" src="/pkg_main/assets/img/ceshijinruye-bg.png"></image>
       <!-- 导航栏 -->
       <div class="nav-bar">
         <div class="back-btn" onclick="goBack">
-          <image class="back-icon" src="/assets/img/back.png"></image>
+          <image class="back-icon" src="/pkg_main/assets/img/back.png"></image>
         </div>
         <text class="nav-title">{{testTitle}}</text>
         <div class="nav-placeholder"></div>
       </div>
       <!-- 卡通人物 -->
-      <image class="character-img" src="/assets/img/cepingrenwu.png"></image>
+      <image class="character-img" src="/pkg_main/assets/img/cepingrenwu.png"></image>
       <!-- 底部渐变叠层 -->
       <div class="header-gradient"></div>
     </div>
@@ -74,7 +74,7 @@ export default {
   },
   startTest() {
     router.push({
-      uri: '/pages/CeshiDatiPage',
+      uri: '/pkg_main/pages/CeshiDatiPage',
       params: { catTitle: this.testTitle, testName: this.testTitle }
     })
   }

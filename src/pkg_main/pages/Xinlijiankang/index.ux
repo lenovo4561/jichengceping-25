@@ -1,9 +1,9 @@
-<template>
+﻿<template>
   <div class="page-wrapper">
     <list class="main-list">
       <!-- 顶部背景图 -->
       <list-item type="banner" class="banner-item">
-        <image class="top-bg" src="/assets/img/xinlijiankang-bg.png"></image>
+        <image class="top-bg" src="/pkg_main/assets/img/xinlijiankang-bg.png"></image>
       </list-item>
 
       <!-- 磨砂面板起始：三图网格 -->
@@ -11,7 +11,7 @@
         <div class="card-grid">
           <!-- 左：大图 -->
           <div class="card-large" onclick="goTest('心理状态测试')">
-            <image class="img-large" src="/assets/img/xlztcs.jpg"></image>
+            <image class="img-large" src="/pkg_main/assets/img/xlztcs.jpg"></image>
             <div class="card-label-wrap">
               <text class="card-label">心理状态测试</text>
             </div>
@@ -19,13 +19,13 @@
           <!-- 右：两个小图 -->
           <div class="card-right-col">
             <div class="card-small" onclick="goTest('抑郁风险评估')">
-              <image class="img-small" src="/assets/img/yyfxpg.jpg"></image>
+              <image class="img-small" src="/pkg_main/assets/img/yyfxpg.jpg"></image>
               <div class="card-label-wrap card-label-right">
                 <text class="card-label">抑郁风险评估</text>
               </div>
             </div>
             <div class="card-small card-small-bottom" onclick="goTest('焦虑测试')">
-              <image class="img-small" src="/assets/img/jlcs.jpg"></image>
+              <image class="img-small" src="/pkg_main/assets/img/jlcs.jpg"></image>
               <div class="card-label-wrap">
                 <text class="card-label">焦虑测试</text>
               </div>
@@ -71,7 +71,7 @@ export default {
   onInit() {},
   goTest(title) {
     router.push({
-      uri: '/pages/CeshiJinruye',
+      uri: '/pkg_main/pages/CeshiJinruye',
       params: { testTitle: title }
     })
   }
@@ -200,7 +200,7 @@ export default {
   margin-bottom: 6px;
 }
 .spacer-item {
-  height: 30px;
+  height: 70px;
   background-color: #ffffff;
 }
 </style>

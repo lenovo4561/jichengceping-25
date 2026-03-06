@@ -1,13 +1,13 @@
-<template>
+﻿<template>
   <list class="page-list">
     <!-- 顶部背景区 -->
     <list-item type="header" class="header-item">
       <div class="header-area">
-        <image class="header-bg" src="/assets/img/ceshixiangqing-bg.png"></image>
+        <image class="header-bg" src="/pkg_main/assets/img/ceshixiangqing-bg.png"></image>
         <!-- 导航栏 -->
         <div class="nav-bar">
           <div class="back-btn" onclick="goBack">
-            <image class="back-icon" src="/assets/img/back.png"></image>
+            <image class="back-icon" src="/pkg_main/assets/img/back.png"></image>
           </div>
         </div>
         <!-- 标题文字区 -->
@@ -182,7 +182,7 @@ export default {
   viewResult() {
     if (!this.allAnswered) return
     router.replace({
-      uri: '/pages/CeshiDatiJielun',
+      uri: '/pkg_main/pages/CeshiDatiJielun',
       params: {
         answers: this.answers.join(','),
         testName: this.testName,
